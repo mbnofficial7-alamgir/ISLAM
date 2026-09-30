@@ -1,1 +1,1318 @@
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISLAM</title>
 
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #e3f5ff;
+    color: #111;
+    padding-bottom: 30px;
+}
+
+/* Header */
+.header {
+    background: white;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.header button {
+    border: none;
+    background: #dff3ff;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Main */
+.container {
+    padding: 12px;
+}
+
+/* Calendar */
+.calendar {
+    background: white;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 7px rgba(0,0,0,.08);
+}
+
+.calendar-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.date {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* Deeni Talim */
+.talim {
+    background: #bde9ff;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 7px rgba(0,0,0,.10);
+}
+
+.talim h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.talim p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.talim button {
+    margin-top: 12px;
+    border: none;
+    background: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+}
+
+/* Prayer */
+.prayer {
+    background: #8fd8f5;
+    color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.prayer h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.current-time {
+    font-size: 29px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+.next {
+    background: white;
+    color: #111;
+    padding: 9px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Menu */
+.menu-title {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 16px 0 10px;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.card {
+    padding: 18px 10px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+.card:nth-child(1) { background:#e8f7ff; }
+.card:nth-child(2) { background:#e8f4e8; }
+.card:nth-child(3) { background:#fff2df; }
+.card:nth-child(4) { background:#f2eaff; }
+.card:nth-child(5) { background:#ffeaea; }
+.card:nth-child(6) { background:#eaf0ff; }
+.card:nth-child(7) { background:#fff8d9; }
+.card:nth-child(8) { background:#e4f7f1; }
+
+/* Topic */
+.topic {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 15px;
+}
+
+.topic h2 {
+    margin-bottom: 12px;
+}
+
+.topic-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.topic-item {
+    background: #e5f6ff;
+    padding: 8px 11px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* Bottom */
+.footer {
+    text-align: center;
+    padding: 20px 5px;
+    font-size: 13px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 20;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-box {
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.modal-box h2 {
+    margin-bottom: 15px;
+}
+
+.modal-box button {
+    border: none;
+    padding: 10px 14px;
+    margin: 5px;
+    border-radius: 8px;
+}
+
+.close {
+    background: #ddd;
+}
+
+/* Mobile */
+@media(max-width:400px) {
+    .menu {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="logo">ISLAM</div>
+
+    <div class="header-buttons">
+        <button onclick="changeLanguage()">🌐</button>
+        <button onclick="openSettings()">⚙️</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Calendar -->
+    <div class="calendar">
+        <div class="calendar-title">📅 ক্যালেন্ডার</div>
+        <div class="date" id="date"></div>
+    </div>
+
+    <!-- Deeni Talim -->
+    <div class="talim">
+        <h2>📖 দ্বীনি তালিম</h2>
+
+        <p>
+            <b>আজকের আয়াত</b><br>
+            নিশ্চয়ই আল্লাহ ধৈর্যশীলদের সাথে আছেন।
+        </p>
+
+        <button onclick="showTalim()">বিস্তারিত দেখুন</button>
+    </div>
+
+    <!-- 🕌 নামাজের সময়সূচী -->
+<section class="prayer-box">
+  <div class="prayer-header">
+    <h2>🕌 নামাজের সময়সূচী</h2>
+    <button onclick="getPrayerTimes()">🔄 আপডেট</button>
+  </div>
+
+  <p id="locationText">📍 লোকেশন খোঁজা হচ্ছে...</p>
+
+  <div id="currentPrayer" class="current-prayer">
+    নামাজের সময় লোড হচ্ছে...
+  </div>
+
+  <div class="next-prayer">
+    পরবর্তী নামাজ:
+    <strong id="nextPrayer">লোড হচ্ছে...</strong>
+  </div>
+
+  <div class="prayer-list">
+    <div><span>ফজর</span><b id="Fajr">--:--</b></div>
+    <div><span>সূর্যোদয়</span><b id="Sunrise">--:--</b></div>
+    <div><span>ইশরাক</span><b id="Ishraq">--:--</b></div>
+    <div><span>চাশত</span><b id="Chasht">--:--</b></div>
+    <div><span>যোহর</span><b id="Dhuhr">--:--</b></div>
+    <div><span>আসর</span><b id="Asr">--:--</b></div>
+    <div><span>মাগরিব</span><b id="Maghrib">--:--</b></div>
+    <div><span>এশা</span><b id="Isha">--:--</b></div>
+    <div><span>সূর্যাস্ত</span><b id="Sunset">--:--</b></div>
+    <div><span>তাহাজ্জুদ</span><b id="Tahajjud">--:--</b></div>
+  </div>
+</section>
+
+<style>
+.prayer-box {
+  background: white;
+  border-radius: 16px;
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.prayer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prayer-header h2 {
+  margin: 0;
+  color: #111;
+  font-size: 20px;
+}
+
+.prayer-header button {
+  border: none;
+  background: #dff4ff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#locationText {
+  font-size: 14px;
+  color: #555;
+}
+
+.current-prayer {
+  background: #8ed8f8;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.next-prayer {
+  background: #eefaff;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.prayer-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.prayer-list div {
+  display: flex;
+  justify-content: space-between;
+  background: #f7fcff;
+  padding: 10px;
+  border-radius: 8px;
+  color: #111;
+}
+
+.prayer-list b {
+  color: #1687b5;
+}
+</style>
+
+<script>
+let prayerData = {};
+
+function getPrayerTimes() {
+
+  if (!navigator.geolocation) {
+    document.getElementById("locationText").innerText =
+      "📍 আপনার ডিভাইসে GPS সাপোর্ট নেই";
+    return;
+  }
+
+  document.getElementById("locationText").innerText =
+    "📍 লোকেশন নেওয়া হচ্ছে...";
+
+  navigator.geolocation.getCurrentPosition(
+    async function(position) {
+
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      try {
+
+        const url =
+          `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=1`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        prayerData = data.data.timings;
+
+        document.getElementById("locationText").innerText =
+          "📍 আপনার বর্তমান লোকেশন অনুযায়ী";
+
+        document.getElementById("Fajr").innerText =
+          prayerData.Fajr;
+
+        document.getElementById("Sunrise").innerText =
+          prayerData.Sunrise;
+
+        document.getElementById("Dhuhr").innerText =
+          prayerData.Dhuhr;
+
+        document.getElementById("Asr").innerText =
+          prayerData.Asr;
+
+        document.getElementById("Maghrib").innerText =
+          prayerData.Maghrib;
+
+        document.getElementById("Isha").innerText =
+          prayerData.Isha;
+
+        document.getElementById("Sunset").innerText =
+          prayerData.Sunset;
+
+        /*
+          ইশরাক, চাশত ও তাহাজ্জুদের সময়
+          পরের ধাপে আরও নির্ভুলভাবে হিসাব করা হবে।
+        */
+
+        document.getElementById("Ishraq").innerText =
+          prayerData.Sunrise;
+
+        document.getElementById("Chasht").innerText =
+          prayerData.Dhuhr;
+
+        document.getElementById("Tahajjud").innerText =
+          "রাতের শেষ অংশ";
+
+        calculateNextPrayer();
+
+      } catch (error) {
+
+        document.getElementById("locationText").innerText =
+          "❌ নামাজের সময় আনতে সমস্যা হয়েছে। ইন্টারনেট পরীক্ষা করুন।";
+
+      }
+
+    },
+
+    function(error) {
+
+      document.getElementById("locationText").innerText =
+        "📍 GPS অনুমতি দিন, তাহলে আপনার এলাকার নামাজের সময় দেখাবে।";
+
+    }
+  );
+}
+
+
+function calculateNextPrayer() {
+
+  const prayers = [
+    ["ফজর", prayerData.Fajr],
+    ["যোহর", prayerData.Dhuhr],
+    ["আসর", prayerData.Asr],
+    ["মাগরিব", prayerData.Maghrib],
+    ["এশা", prayerData.Isha]
+  ];
+
+  const now = new Date();
+
+  let currentMinutes =
+    now.getHours() * 60 + now.getMinutes();
+
+  let next = null;
+
+  for (let i = 0; i < prayers.length; i++) {
+
+    const time = prayers[i][1];
+
+    if (!time) continue;
+
+    const parts = time.split(":");
+
+    const minutes =
+      parseInt(parts[0]) * 60 +
+      parseInt(parts[1]);
+
+    if (minutes > currentMinutes) {
+      next = prayers[i];
+      break;
+    }
+  }
+
+  if (!next) {
+    next = prayers[0];
+  }
+
+  document.getElementById("nextPrayer").innerText =
+    next[0] + " — " + next[1];
+
+  document.getElementById("currentPrayer").innerText =
+    "🕌 পরবর্তী নামাজ: " + next[0];
+
+}
+
+
+// অ্যাপ চালু হলে নামাজের সময় লোড হবে
+getPrayerTimes();
+</script>
+
+    <!-- Main Menu -->
+    <div class="menu-title">ইসলামিক ফিচার</div>
+
+    <div class="menu">
+
+        <div class="card" onclick="openFeature('কুরআনের তাফসির')">
+            📖<br>কুরআনের তাফসির
+        </div>
+
+        <div class="card" onclick="openFeature('হাফিজি কুরআন')">
+            📕<br>হাফিজি কুরআন
+        </div>
+
+        <div class="card" onclick="openFeature('কারিয়ানা কুরআন')">
+            🎧<br>কারিয়ানা কুরআন
+        </div>
+
+        <div class="card" onclick="openFeature('বিষয়ভিত্তিক')">
+            📚<br>বিষয়ভিত্তিক
+        </div>
+
+        <div class="card" onclick="openQibla()">
+    🕋<br>
+    কিবলা
+        </div>
+
+        <div class="card" onclick="openFeature('GPS ও ম্যাপ')">
+            📍<br>GPS ও ম্যাপ
+        </div>
+
+        <div class="card" onclick="openFeature('নামাজ')">
+            🕌<br>নামাজ
+        </div>
+
+        <div class="card" onclick="openFeature('ক্যালেন্ডার')">
+            📅<br>ক্যালেন্ডার
+        </div>
+
+    </div>
+
+    <!-- Topics -->
+    <div class="topic">
+
+        <h2>📚 বিষয়ভিত্তিক কুরআন ও হাদিস</h2>
+
+        <div class="topic-list">
+
+            <div class="topic-item">কুরআন</div>
+            <div class="topic-item">ঈমান</div>
+            <div class="topic-item">সালাত</div>
+            <div class="topic-item">দোয়া</div>
+            <div class="topic-item">আল্লাহ</div>
+            <div class="topic-item">নবী-রাসূল</div>
+            <div class="topic-item">মুহাম্মদ ﷺ</div>
+            <div class="topic-item">দাজ্জাল</div>
+            <div class="topic-item">ইয়াজুজ-মাজুজ</div>
+            <div class="topic-item">ঈসা (আ.)</div>
+            <div class="topic-item">মূসা (আ.)</div>
+            <div class="topic-item">আদম (আ.)</div>
+            <div class="topic-item">আখিরাত</div>
+            <div class="topic-item">জান্নাত</div>
+            <div class="topic-item">জাহান্নাম</div>
+            <div class="topic-item">কবর</div>
+            <div class="topic-item">কেয়ামত</div>
+            <div class="topic-item">রমাদান</div>
+            <div class="topic-item">সওম</div>
+            <div class="topic-item">হজ্জ ও উমরাহ</div>
+            <div class="topic-item">যাকাত</div>
+            <div class="topic-item">দান-সদকা</div>
+            <div class="topic-item">হালাল-হারাম</div>
+            <div class="topic-item">বিয়ে ও তালাক</div>
+            <div class="topic-item">শয়তান</div>
+            <div class="topic-item">মুনাফিক</div>
+            <div class="topic-item">কুফর</div>
+            <div class="topic-item">অজু</div>
+            <div class="topic-item">গোসল</div>
+            <div class="topic-item">আজান</div>
+            <div class="topic-item">ফিতনা</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+    © ISLAM — Islamic App
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <h2 id="modalTitle">ISLAM</h2>
+
+        <p id="modalText">
+            ফিচারটি শীঘ্রই যুক্ত করা হবে।
+        </p>
+
+        <button class="close" onclick="closeModal()">
+            বন্ধ করুন
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* Date */
+const today = new Date();
+
+document.getElementById("date").innerHTML =
+    today.toLocaleDateString("bn-BD", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+
+
+/* Feature */
+function openFeature(name) {
+
+    document.getElementById("modalTitle").innerText = name;
+
+    document.getElementById("modalText").innerText =
+        name + " ফিচারটি পরবর্তী ধাপে সম্পূর্ণভাবে তৈরি করা হবে।";
+
+    document.getElementById("modal").style.display = "flex";
+}
+function openQibla(){
+
+    document.getElementById("modalTitle").innerText =
+    "🕋 কিবলা দিকনির্দেশনা";
+
+    document.getElementById("modalText").innerHTML = `
+        <div style="text-align:center">
+
+            <div style="
+                font-size:70px;
+                margin:15px;
+            ">
+                🕋
+            </div>
+
+            <p id="qiblaStatus">
+                📍 আপনার অবস্থান নেওয়া হচ্ছে...
+            </p>
+
+            <div style="
+                margin:20px auto;
+                width:180px;
+                height:180px;
+                border-radius:50%;
+                border:8px solid #bde9ff;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:50px;
+            ">
+                🧭
+            </div>
+
+            <p id="qiblaDirection">
+                কিবলার দিক হিসাব করা হচ্ছে...
+            </p>
+
+        </div>
+    `;
+
+    document.getElementById("modal").style.display =
+    "flex";
+
+    calculateQibla();
+}
+
+
+function calculateQibla(){
+
+    if(!navigator.geolocation){
+
+        document.getElementById("qiblaStatus").innerText =
+        "❌ আপনার ডিভাইসে GPS সাপোর্ট নেই।";
+
+        return;
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+            const latitude =
+            position.coords.latitude;
+
+            const longitude =
+            position.coords.longitude;
+
+
+            /*
+            কাবা শরিফের অবস্থান
+            */
+
+            const kaabaLatitude =
+            21.4225;
+
+            const kaabaLongitude =
+            39.8262;
+
+
+            const lat1 =
+            latitude * Math.PI / 180;
+
+            const lat2 =
+            kaabaLatitude * Math.PI / 180;
+
+            const lon1 =
+            longitude * Math.PI / 180;
+
+            const lon2 =
+            kaabaLongitude * Math.PI / 180;
+
+
+            const y =
+            Math.sin(lon2-lon1) *
+            Math.cos(lat2);
+
+
+            const x =
+            Math.cos(lat1) *
+            Math.sin(lat2)
+            -
+            Math.sin(lat1) *
+            Math.cos(lat2) *
+            Math.cos(lon2-lon1);
+
+
+            let angle =
+            Math.atan2(y,x)
+            *180/Math.PI;
+
+
+            angle =
+            (angle + 360) % 360;
+
+
+            document.getElementById("qiblaStatus").innerText =
+            "📍 আপনার অবস্থান পাওয়া গেছে";
+
+
+            document.getElementById("qiblaDirection").innerHTML =
+            "🕋 কিবলার দিক<br><br>" +
+            "<strong style='font-size:28px'>" +
+            angle.toFixed(1) +
+            "°" +
+            "</strong>";
+
+        },
+
+        function(){
+
+            document.getElementById("qiblaStatus").innerText =
+            "❌ কিবলা নির্ণয়ের জন্য GPS অনুমতি দিন।";
+
+        }
+
+    );
+
+  }
+
+/* Talim */
+function showTalim() {
+
+    document.getElementById("modalTitle").innerText =
+        "আজকের দ্বীনি তালিম";
+
+    document.getElementById("modalText").innerText =
+        "নিশ্চয়ই আল্লাহ ধৈর্যশীলদের সাথে আছেন।";
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+
+/* Language */
+function changeLanguage() {
+
+    document.getElementById("modalTitle").innerText =
+        "Language";
+
+    document.getElementById("modalText").innerText =
+        "বাংলা • English • العربية • हिन्दी এবং অন্যান্য ভাষা পরবর্তী ধাপে যুক্ত করা হবে।";
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+
+/* Settings */
+function openSettings() {
+
+    document.getElementById("modalTitle").innerText =
+        "Settings";
+
+    document.getElementById("modalText").innerText =
+        "Theme Color, Profile Picture, Language এবং অন্যান্য সেটিংস এখানে থাকবে।";
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+
+/* Close */
+function closeModal() {
+
+    document.getElementById("modal").style.display = "none";
+}
+
+</script>
+
+</body>
+</html><!-- ============================= -->
+<!-- দ্বীনি তালিম সেকশন -->
+<!-- ============================= -->
+
+<div class="talim-section">
+
+    <div class="talim-header">
+        <h2>📖 দ্বীনি তালিম</h2>
+        <button onclick="openAddTalim()">＋</button>
+    </div>
+
+    <div id="talimPosts"></div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- নতুন তালিম যোগ করার পপআপ -->
+<!-- ============================= -->
+
+<div class="talim-modal" id="talimModal">
+
+    <div class="talim-modal-box">
+
+        <h2>নতুন দ্বীনি তালিম</h2>
+
+        <input
+            type="text"
+            id="talimTitle"
+            placeholder="শিরোনাম"
+        >
+
+        <textarea
+            id="talimContent"
+            placeholder="কুরআনের আয়াত অথবা হাদিস লিখুন..."
+        ></textarea>
+
+        <input
+            type="text"
+            id="talimReference"
+            placeholder="উৎস / রেফারেন্স"
+        >
+
+        <div class="talim-buttons">
+
+            <button onclick="saveTalim()">
+                প্রকাশ করুন
+            </button>
+
+            <button onclick="closeTalim()">
+                বাতিল
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* ============================= */
+/* দ্বীনি তালিম */
+/* ============================= */
+
+.talim-section {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    margin-top: 12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.08);
+
+}
+
+
+.talim-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+
+}
+
+
+.talim-header h2 {
+
+    font-size: 21px;
+
+}
+
+
+.talim-header button {
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #bde9ff;
+
+    font-size: 24px;
+
+}
+
+
+/* ============================= */
+/* পোস্ট */
+/* ============================= */
+
+.talim-post {
+
+    background: #dff4ff;
+
+    border-radius: 12px;
+
+    padding: 15px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.talim-post h3 {
+
+    margin-bottom: 7px;
+
+    font-size: 18px;
+
+}
+
+
+.talim-post p {
+
+    line-height: 1.7;
+
+    font-size: 16px;
+
+}
+
+
+.talim-date {
+
+    margin-top: 8px;
+
+    font-size: 12px;
+
+    opacity: .65;
+
+}
+
+
+.talim-reference {
+
+    margin-top: 8px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+}
+
+
+/* ============================= */
+/* Modal */
+/* ============================= */
+
+.talim-modal {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.55);
+
+    z-index: 100;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.talim-modal-box {
+
+    width: 92%;
+
+    max-width: 420px;
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 20px;
+
+}
+
+
+.talim-modal-box h2 {
+
+    margin-bottom: 15px;
+
+}
+
+
+.talim-modal-box input,
+
+.talim-modal-box textarea {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+}
+
+
+.talim-modal-box textarea {
+
+    min-height: 130px;
+
+    resize: vertical;
+
+}
+
+
+.talim-buttons {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.talim-buttons button {
+
+    flex: 1;
+
+    border: none;
+
+    padding: 11px;
+
+    border-radius: 8px;
+
+}
+
+
+.talim-buttons button:first-child {
+
+    background: #bde9ff;
+
+}
+
+
+.talim-buttons button:last-child {
+
+    background: #eee;
+
+}
+
+</style>
+
+
+<script>
+
+/* ============================= */
+/* ডিফল্ট তালিম */
+/* ============================= */
+
+let talimPosts =
+JSON.parse(localStorage.getItem("islam_talim_posts")) || [
+
+    {
+        title: "আজকের দ্বীনি তালিম",
+
+        content:
+        "নিশ্চয়ই আল্লাহ ধৈর্যশীলদের সাথে আছেন।",
+
+        reference:
+        "কুরআন",
+
+        date:
+        new Date().toLocaleDateString("bn-BD")
+    }
+
+];
+
+
+/* ============================= */
+/* পোস্ট দেখানো */
+/* ============================= */
+
+function renderTalim() {
+
+    const container =
+        document.getElementById("talimPosts");
+
+    container.innerHTML = "";
+
+    talimPosts.forEach(function(post) {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "talim-post";
+
+        div.innerHTML = `
+
+            <h3>${escapeHTML(post.title)}</h3>
+
+            <p>
+                ${escapeHTML(post.content)}
+            </p>
+
+            <div class="talim-reference">
+                ${escapeHTML(post.reference)}
+            </div>
+
+            <div class="talim-date">
+                ${post.date}
+            </div>
+
+        `;
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* ============================= */
+/* নতুন পোস্ট */
+/* ============================= */
+
+function openAddTalim() {
+
+    document.getElementById(
+        "talimModal"
+    ).style.display = "flex";
+
+}
+
+
+function closeTalim() {
+
+    document.getElementById(
+        "talimModal"
+    ).style.display = "none";
+
+}
+
+
+/* ============================= */
+/* পোস্ট সংরক্ষণ */
+/* ============================= */
+
+function saveTalim() {
+
+    const title =
+        document.getElementById(
+            "talimTitle"
+        ).value.trim();
+
+    const content =
+        document.getElementById(
+            "talimContent"
+        ).value.trim();
+
+    const reference =
+        document.getElementById(
+            "talimReference"
+        ).value.trim();
+
+
+    if (!title || !content) {
+
+        alert(
+            "শিরোনাম এবং তালিম লিখুন।"
+        );
+
+        return;
+
+    }
+
+
+    const newPost = {
+
+        title: title,
+
+        content: content,
+
+        reference:
+            reference || "উৎস উল্লেখ করা হয়নি",
+
+        date:
+            new Date().toLocaleDateString(
+                "bn-BD"
+            )
+
+    };
+
+
+    talimPosts.unshift(newPost);
+
+
+    localStorage.setItem(
+
+        "islam_talim_posts",
+
+        JSON.stringify(talimPosts)
+
+    );
+
+
+    document.getElementById(
+        "talimTitle"
+    ).value = "";
+
+    document.getElementById(
+        "talimContent"
+    ).value = "";
+
+    document.getElementById(
+        "talimReference"
+    ).value = "";
+
+
+    closeTalim();
+
+    renderTalim();
+
+}
+
+
+/* ============================= */
+/* নিরাপদ HTML */
+/* ============================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* ============================= */
+/* চালু করা */
+/* ============================= */
+
+renderTalim();
+
+</script>
