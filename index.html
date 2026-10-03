@@ -837,16 +837,48 @@ function openQibla(){
                 <!-- মাঝের বিন্দু -->
                 <div style="
                     position:absolute;
-                    left:50%;
-                    top:50%;
-                    width:14px;
-                    height:14px;
-                    transform:translate(-50%,-50%);
-                    border-radius:50%;
-                    background:#222;
-                    border:3px solid white;
-                    z-index:6;
-                "></div>
+function openQibla(){
+
+    document.getElementById("modalTitle").innerText =
+    "🕋 কিবলা দিকনির্দেশনা";
+
+    document.getElementById("modalText").innerHTML = `
+        <div style="text-align:center">
+
+            <div style="
+                font-size:60px;
+                margin:10px;
+            ">
+                🕋
+            </div>
+
+            <p id="qiblaStatus">
+                📍 আপনার অবস্থান নেওয়া হচ্ছে...
+            </p>
+
+            <div style="
+                position:relative;
+                margin:15px auto;
+                width:220px;
+                height:220px;
+                border-radius:50%;
+                border:8px solid #bde9ff;
+                background:#ffffff;
+                box-shadow:0 3px 12px rgba(0,0,0,.18);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                overflow:hidden;
+            ">
+
+                <div id="qiblaCompass"
+                    style="
+                    font-size:70px;
+                    line-height:1;
+                    transition:transform .15s linear;
+                    ">
+                    ⬆️
+                </div>
 
             </div>
 
@@ -855,40 +887,4 @@ function openQibla(){
                 font-weight:bold;
             ">
                 🕋 কিবলার দিক
-            </p>
-
-            <p id="qiblaDirection">
-                কিবলার দিক হিসাব করা হচ্ছে...
-            </p>
-              <div style="
-    margin:10px auto;
-    padding:8px;
-    border-radius:10px;
-    background:#f0faff;
-    font-size:15px;
-    font-weight:bold;
-    color:#111;
-">
-    🧭 উত্তর: N &nbsp; | &nbsp;
-    পূর্ব: E &nbsp; | &nbsp;
-    দক্ষিণ: S &nbsp; | &nbsp;
-    পশ্চিম: W
-</div>
-
-            <button onclick="requestCompassPermission()"
-                style="
-                padding:11px 20px;
-                border:0;
-                border-radius:12px;
-                background:#bde9ff;
-                font-weight:bold;
-                font-size:16px;
-                ">
-                🧭 কম্পাস চালু করুন
-            </button>
-
-        </div>
-    `;
-
-    document.getElementById("modal").style.display =
-  
+            <
