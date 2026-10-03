@@ -198,7 +198,7 @@ body {
 /* Modal */
 .modal {
     display: none;
-        position: fixed;
+    position: fixed;
     inset: 0;
     background: rgba(0,0,0,.5);
     z-index: 20;
@@ -398,7 +398,7 @@ function getPrayerTimes() {
       try {
 
         const url =
-                      `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=1`;
+          `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=1`;
 
         const response = await fetch(url);
         const data = await response.json();
@@ -497,8 +497,8 @@ function calculateNextPrayer() {
       next = prayers[i];
       break;
     }
-    }
-    
+  }
+
   if (!next) {
     next = prayers[0];
   }
@@ -598,7 +598,7 @@ getPrayerTimes();
         </div>
 
     </div>
-    
+
 </div>
 
 <div class="footer">
@@ -648,6 +648,8 @@ function openFeature(name) {
 
     document.getElementById("modal").style.display = "flex";
 }
+  let currentQiblaAngle = 0;
+let compassListening = false;
 function openQibla(){
 
     document.getElementById("modalTitle").innerText =
@@ -676,14 +678,32 @@ function openQibla(){
                 display:flex;
                 align-items:center;
                 justify-content:center;
-                font-size:50px;
+                overflow:hidden;
             ">
-                🧭
+                <div id="qiblaCompass"
+                     style="
+                     font-size:70px;
+                     transition:transform .15s linear;
+                     ">
+                    ⬆️
+                </div>
             </div>
 
             <p id="qiblaDirection">
                 কিবলার দিক হিসাব করা হচ্ছে...
             </p>
+
+            <button onclick="requestCompassPermission()"
+                style="
+                padding:10px 18px;
+                border:0;
+                border-radius:10px;
+                background:#bde9ff;
+                font-weight:bold;
+                font-size:16px;
+                ">
+                🧭 কম্পাস চালু করুন
+            </button>
 
         </div>
     `;
@@ -692,7 +712,7 @@ function openQibla(){
     "flex";
 
     calculateQibla();
-}
+  }
 
 
 function calculateQibla(){
@@ -704,7 +724,7 @@ function calculateQibla(){
 
         return;
     }
-    
+
 
     navigator.geolocation.getCurrentPosition(
 
@@ -762,7 +782,8 @@ function calculateQibla(){
 
             angle =
             (angle + 360) % 360;
-
+          
+currentQiblaAngle = angle;
 
             document.getElementById("qiblaStatus").innerText =
             "📍 আপনার অবস্থান পাওয়া গেছে";
@@ -774,7 +795,7 @@ function calculateQibla(){
             angle.toFixed(1) +
             "°" +
             "</strong>";
-startCompass(angle);
+
         },
 
         function(){
@@ -787,26 +808,97 @@ startCompass(angle);
     );
 
   }
+  function requestCompassPermission(){
+
+    const start = function(){
+
+        startCompass(currentQiblaAngle);
+
+    };
+
+
+    if(
+        typeof DeviceOrientationEvent !== "undefined" &&
+        typeof DeviceOrientationEvent.requestPermission === "function"
+    ){
+
+        DeviceOrientationEvent.requestPermission(true)
+
+        .then(function(permission){
+
+            if(permission === "granted"){
+
+                start();
+
+            }else{
+
+                document.getElementById("qiblaStatus").innerText =
+                "❌ কম্পাস ব্যবহারের অনুমতি দেওয়া হয়নি।";
+
+            }
+
+        })
+
+        .catch(function(){
+
+            document.getElementById("qiblaStatus").innerText =
+            "❌ কম্পাস অনুমতি নেওয়া যায়নি।";
+
+        });
+
+    }else{
+
+        start();
+
+    }
+  }
 function startCompass(qiblaAngle){
+
+    let lastHeading = null;
 
     function handleCompass(event){
 
         let heading = null;
 
-        if(event.webkitCompassHeading){
+        // iPhone / কিছু ব্রাউজারের কম্পাস
+        if(
+            event.webkitCompassHeading !== undefined &&
+            event.webkitCompassHeading !== null
+        ){
 
             heading = event.webkitCompassHeading;
 
-        }else if(event.alpha !== null){
+        }
+
+        // Android absolute orientation
+        else if(
+            event.absolute === true &&
+            event.alpha !== null
+        ){
+
+            heading = 360 - event.alpha;
+
+        }
+
+        // সাধারণ orientation
+        else if(event.alpha !== null){
 
             heading = 360 - event.alpha;
 
         }
 
         if(heading === null){
+
+            document.getElementById("qiblaStatus").innerText =
+            "⚠️ ফোনের কম্পাসের তথ্য পাওয়া যাচ্ছে না।";
+
             return;
-    }
-        
+        }
+
+        heading = (heading + 360) % 360;
+
+        lastHeading = heading;
+
         let rotation =
         qiblaAngle - heading;
 
@@ -822,7 +914,14 @@ function startCompass(qiblaAngle){
             "rotate(" + rotation + "deg)";
 
         }
+
+        document.getElementById("qiblaStatus").innerText =
+        "🧭 কম্পাস চলছে — ফোনের দিক: " +
+        heading.toFixed(0) +
+        "°";
+
     }
+
 
     window.addEventListener(
         "deviceorientationabsolute",
@@ -830,11 +929,16 @@ function startCompass(qiblaAngle){
         true
     );
 
+
     window.addEventListener(
         "deviceorientation",
         handleCompass,
         true
     );
+
+
+    document.getElementById("qiblaStatus").innerText =
+    "🧭 কম্পাস চালু হয়েছে — ফোন ঘোরান";
   }
 /* Talim */
 function showTalim() {
@@ -898,7 +1002,7 @@ function closeModal() {
     <div id="talimPosts"></div>
 
 </div>
-    
+
 
 <!-- ============================= -->
 <!-- নতুন তালিম যোগ করার পপআপ -->
@@ -997,7 +1101,7 @@ function closeModal() {
     border-radius: 50%;
 
     background: #bde9ff;
-    
+
     font-size: 24px;
 
 }
@@ -1095,8 +1199,8 @@ function closeModal() {
 
     padding: 20px;
 
-    }
-    
+}
+
 
 .talim-modal-box h2 {
 
@@ -1194,7 +1298,7 @@ JSON.parse(localStorage.getItem("islam_talim_posts")) || [
     }
 
 ];
-    
+
 
 /* ============================= */
 /* পোস্ট দেখানো */
@@ -1258,8 +1362,8 @@ function closeTalim() {
         "talimModal"
     ).style.display = "none";
 
-    }
-    
+}
+
 
 /* ============================= */
 /* পোস্ট সংরক্ষণ */
@@ -1309,7 +1413,7 @@ function saveTalim() {
             )
 
     };
-    
+
 
     talimPosts.unshift(newPost);
 
