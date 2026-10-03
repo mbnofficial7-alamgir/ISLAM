@@ -653,14 +653,14 @@ let compassListening = false;
 function openQibla(){
 
     document.getElementById("modalTitle").innerText =
-    "🕋 কিবলা দিকনির্দেশনা";
+        "🕋 কিবলা দিকনির্দেশনা";
 
     document.getElementById("modalText").innerHTML = `
         <div style="text-align:center">
 
             <div style="
                 font-size:60px;
-                margin:8px;
+                margin:10px;
             ">
                 🕋
             </div>
@@ -678,6 +678,10 @@ function openQibla(){
                 border:8px solid #bde9ff;
                 background:#ffffff;
                 box-shadow:0 3px 12px rgba(0,0,0,.18);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                overflow:hidden;
             ">
 
                 <!-- উত্তর -->
@@ -728,30 +732,23 @@ function openQibla(){
                 <!-- কম্পাসের তীর -->
                 <div id="qiblaCompass"
                     style="
-                    position:absolute;
-                    left:50%;
-                    top:50%;
-                    transform:translate(-50%,-50%);
                     font-size:70px;
                     line-height:1;
                     transition:transform .15s linear;
                     z-index:3;
-                    ">
+                ">
                     ⬆️
                 </div>
 
                 <!-- মাঝের বিন্দু -->
                 <div style="
                     position:absolute;
-                    left:50%;
-                    top:50%;
                     width:14px;
                     height:14px;
-                    transform:translate(-50%,-50%);
                     border-radius:50%;
                     background:#222;
                     border:3px solid white;
-                    z-index:6;
+                    z-index:4;
                 "></div>
 
             </div>
@@ -782,11 +779,11 @@ function openQibla(){
         </div>
     `;
 
-    document.getElementById("modal").style.display =
-    "flex";
+    document.getElementById("modal").style.display = "flex";
 
     calculateQibla();
   }
+
 
 
 
@@ -939,4 +936,11 @@ function startCompass(qiblaAngle){
 
         // iPhone / কিছু ব্রাউজারের কম্পাস
         if(
-            event.webkitCompassHeading !== undefined 
+            event.webkitCompassHeading !== undefined &&
+            event.webkitCompassHeading !== null
+        ){
+
+            heading = event.webkitCompassHeading;
+
+        }
+    
