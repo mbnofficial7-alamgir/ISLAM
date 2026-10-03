@@ -928,6 +928,21 @@ currentQiblaAngle = angle;
   }
 function startCompass(qiblaAngle){
 
+    // আগের কম্পাস listener থাকলে বন্ধ করুন
+    if(startCompass.oldHandler){
+        window.removeEventListener(
+            "deviceorientationabsolute",
+            startCompass.oldHandler,
+            true
+        );
+
+        window.removeEventListener(
+            "deviceorientation",
+            startCompass.oldHandler,
+            true
+        );
+    }
+
     let lastHeading = null;
 
     function smoothAngle(oldAngle, newAngle){
@@ -946,120 +961,75 @@ function startCompass(qiblaAngle){
             difference += 360;
         }
 
-        return oldAngle + difference * 0.18;
+        return oldAngle + difference * 0.12;
     }
-
 
     function handleCompass(event){
 
         let heading = null;
 
-
-        /* iPhone / কিছু ব্রাউজার */
+        // কিছু ফোনে এটি পাওয়া যায়
         if(
             event.webkitCompassHeading !== undefined &&
             event.webkitCompassHeading !== null
         ){
-
             heading = event.webkitCompassHeading;
-
         }
 
-
-        /* Absolute compass */
-        else if(
-            event.absolute === true &&
-            event.alpha !== null
-        ){
-
-            heading = 360 - event.alpha;
-
-        }
-
-
-        /* সাধারণ orientation */
+        // Android ফোনের জন্য
         else if(event.alpha !== null){
 
             heading = 360 - event.alpha;
-
         }
-
 
         if(heading === null){
-
             return;
-
         }
 
+        heading = (heading + 360) % 360;
 
-        heading =
-        (heading + 360) % 360;
-
-
-        /* তীর কাঁপা কমানো */
+        // কাঁপুনি কমানো
         let smoothHeading =
         smoothAngle(lastHeading, heading);
 
-
-        lastHeading =
-        smoothHeading;
-
+        lastHeading = smoothHeading;
 
         smoothHeading =
         (smoothHeading + 360) % 360;
 
-
-        /*
-        পুরো কম্পাসের N E S W ঘুরবে
-        */
-
-        const compass =
+        const arrow =
         document.getElementById("qiblaCompass");
 
-
-        if(!compass){
-
+        if(!arrow){
             return;
-
         }
 
-
-        /*
-        qiblaCompass-এর parent হলো
-        গোল কম্পাসের ভিতরের অংশ।
-        */
-
-        const dial =
-        compass.parentElement;
-
+        // N E S W যেই বৃত্তের মধ্যে আছে
+        const dial = arrow.parentElement;
 
         if(dial){
+
+            dial.style.transition =
+            "transform 0.12s linear";
 
             dial.style.transform =
             "rotate(" +
             (-smoothHeading) +
             "deg)";
-
         }
 
+        // কিবলার তীর
+        arrow.style.transition =
+        "transform 0.12s linear";
 
-        /*
-        তীরটি কিবলার দিকে থাকবে।
-        */
-
-        compass.style.transform =
+        arrow.style.transform =
         "rotate(" +
         qiblaAngle +
         "deg)";
 
-
-        /*
-        ফোনের বর্তমান দিক দেখানো
-        */
-
+        // ফোনের বর্তমান দিক দেখানো
         const status =
         document.getElementById("qiblaStatus");
-
 
         if(status){
 
@@ -1067,11 +1037,11 @@ function startCompass(qiblaAngle){
             "🧭 কম্পাস চলছে — ফোনের দিক: " +
             Math.round(smoothHeading) +
             "°";
-
         }
-
     }
 
+    // নতুন listener সংরক্ষণ
+    startCompass.oldHandler = handleCompass;
 
     window.addEventListener(
         "deviceorientationabsolute",
@@ -1079,18 +1049,17 @@ function startCompass(qiblaAngle){
         true
     );
 
-
     window.addEventListener(
         "deviceorientation",
         handleCompass,
         true
     );
 
-
     document.getElementById("qiblaStatus").innerText =
-    "🧭 কম্পাস চালু হয়েছে — ফোন ঘোরান";
-
+    "🧭 কম্পাস চালু হয়েছে — ফোন ধীরে ধীরে ঘোরান";
   }
+
+
 /* Talim */
 function showTalim() {
 
