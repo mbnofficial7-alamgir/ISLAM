@@ -943,4 +943,605 @@ function startCompass(qiblaAngle){
             heading = event.webkitCompassHeading;
 
         }
+
+    // Android absolute orientation
+        else if(
+            event.absolute === true &&
+            event.alpha !== null
+        ){
+
+            heading = 360 - event.alpha;
+
+        }
+
+        // সাধারণ orientation
+        else if(event.alpha !== null){
+
+            heading = 360 - event.alpha;
+
+        }
+
+        if(heading === null){
+
+            document.getElementById("qiblaStatus").innerText =
+            "⚠️ ফোনের কম্পাসের তথ্য পাওয়া যাচ্ছে না।";
+
+            return;
+        }
+
+        heading = (heading + 360) % 360;
+
+        lastHeading = heading;
+
+        let rotation =
+        qiblaAngle - heading;
+
+        rotation =
+        (rotation + 360) % 360;
+
+        const compass =
+        document.getElementById("qiblaCompass");
+
+        if(compass){
+
+            compass.style.transform =
+            "rotate(" + rotation + "deg)";
+
+        }
+
+        document.getElementById("qiblaStatus").innerText =
+        "🧭 কম্পাস চলছে — ফোনের দিক: " +
+        heading.toFixed(0) +
+        "°";
+
+    }
+
+
+    window.addEventListener(
+        "deviceorientationabsolute",
+        handleCompass,
+        true
+    );
+
+
+    window.addEventListener(
+        "deviceorientation",
+        handleCompass,
+        true
+    );
+
+
+    document.getElementById("qiblaStatus").innerText =
+    "🧭 কম্পাস চালু হয়েছে — ফোন ঘোরান";
+  }
+/* Talim */
+function showTalim() {
+
+    document.getElementById("modalTitle").innerText =
+        "আজকের দ্বীনি তালিম";
+
+    document.getElementById("modalText").innerText =
+        "নিশ্চয়ই আল্লাহ ধৈর্যশীলদের সাথে আছেন।";
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+
+/* Language */
+function changeLanguage() {
+
+    document.getElementById("modalTitle").innerText =
+        "Language";
+    
+    document.getElementById("modalText").innerText =
+        "বাংলা • English • العربية • हिन्दी এবং অন্যান্য ভাষা পরবর্তী ধাপে যুক্ত করা হবে।";
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+
+/* Settings */
+function openSettings() {
+
+    document.getElementById("modalTitle").innerText =
+        "Settings";
+
+    document.getElementById("modalText").innerText =
+        "Theme Color, Profile Picture, Language এবং অন্যান্য সেটিংস এখানে থাকবে।";
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+
+/* Close */
+function closeModal() {
+
+    document.getElementById("modal").style.display = "none";
+}
+
+</script>
+
+</body>
+</html><!-- ============================= -->
+<!-- দ্বীনি তালিম সেকশন -->
+<!-- ============================= -->
+
+<div class="talim-section">
+
+    <div class="talim-header">
+        <h2>📖 দ্বীনি তালিম</h2>
+        <button onclick="openAddTalim()">＋</button>
+    </div>
+
+    <div id="talimPosts"></div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- নতুন তালিম যোগ করার পপআপ -->
+<!-- ============================= -->
+
+<div class="talim-modal" id="talimModal">
+
+    <div class="talim-modal-box">
+
+        <h2>নতুন দ্বীনি তালিম</h2>
+
+        <input
+            type="text"
+            id="talimTitle"
+            placeholder="শিরোনাম"
+        >
+
+        <textarea
+            id="talimContent"
+            placeholder="কুরআনের আয়াত অথবা হাদিস লিখুন..."
+        ></textarea>
+
+        <input
+            type="text"
+            id="talimReference"
+            placeholder="উৎস / রেফারেন্স"
+        >
+
+        <div class="talim-buttons">
+
+            <button onclick="saveTalim()">
+                প্রকাশ করুন
+            </button>
+
+            <button onclick="closeTalim()">
+                বাতিল
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* ============================= */
+/* দ্বীনি তালিম */
+/* ============================= */
+
+.talim-section {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    margin-top: 12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.08);
+
+}
+
+
+.talim-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+
+}
+
+
+.talim-header h2 {
+
+    font-size: 21px;
+
+}
+
+
+.talim-header button {
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #bde9ff;
+
+    font-size: 24px;
+
+}
+
+
+/* ============================= */
+/* পোস্ট */
+/* ============================= */
+
+.talim-post {
+
+    background: #dff4ff;
+
+    border-radius: 12px;
+
+    padding: 15px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.talim-post h3 {
+
+    margin-bottom: 7px;
+
+    font-size: 18px;
+
+}
+
+
+.talim-post p {
+
+    line-height: 1.7;
+
+    font-size: 16px;
+
+}
+
+
+.talim-date {
+
+    margin-top: 8px;
+
+    font-size: 12px;
+
+    opacity: .65;
+
+}
+
+
+.talim-reference {
+
+    margin-top: 8px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+}
+
+
+/* ============================= */
+/* Modal */
+/* ============================= */
+
+.talim-modal {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.55);
+
+    z-index: 100;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.talim-modal-box {
+
+    width: 92%;
+
+    max-width: 420px;
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 20px;
+
+}
+
+
+.talim-modal-box h2 {
+
+    margin-bottom: 15px;
+
+}
+
+
+.talim-modal-box input,
+
+.talim-modal-box textarea {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+}
+
+
+.talim-modal-box textarea {
+
+    min-height: 130px;
+
+    resize: vertical;
+
+}
+
+
+.talim-buttons {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.talim-buttons button {
+
+    flex: 1;
+
+    border: none;
+
+    padding: 11px;
+
+    border-radius: 8px;
+
+}
+
+
+.talim-buttons button:first-child {
+
+    background: #bde9ff;
+
+}
+
+
+.talim-buttons button:last-child {
+
+    background: #eee;
+
+}
+
+</style>
+
+
+<script>
+
+/* ============================= */
+/* ডিফল্ট তালিম */
+/* ============================= */
+
+let talimPosts =
+JSON.parse(localStorage.getItem("islam_talim_posts")) || [
+
+    {
+        title: "আজকের দ্বীনি তালিম",
+
+        content:
+        "নিশ্চয়ই আল্লাহ ধৈর্যশীলদের সাথে আছেন।",
+
+        reference:
+        "কুরআন",
+
+        date:
+        new Date().toLocaleDateString("bn-BD")
+    }
+
+];
+
+
+/* ============================= */
+/* পোস্ট দেখানো */
+/* ============================= */
+
+function renderTalim() {
+
+    const container =
+        document.getElementById("talimPosts");
+
+    container.innerHTML = "";
+
+    talimPosts.forEach(function(post) {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "talim-post";
+
+        div.innerHTML = `
+
+            <h3>${escapeHTML(post.title)}</h3>
+
+            <p>
+                ${escapeHTML(post.content)}
+            </p>
+
+            <div class="talim-reference">
+                ${escapeHTML(post.reference)}
+            </div>
+
+            <div class="talim-date">
+                ${post.date}
+            </div>
+    
+        `;
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* ============================= */
+/* নতুন পোস্ট */
+/* ============================= */
+
+function openAddTalim() {
+
+    document.getElementById(
+        "talimModal"
+    ).style.display = "flex";
+
+}
+
+
+function closeTalim() {
+
+    document.getElementById(
+        "talimModal"
+    ).style.display = "none";
+
+}
+
+
+/* ============================= */
+/* পোস্ট সংরক্ষণ */
+/* ============================= */
+
+function saveTalim() {
+
+    const title =
+        document.getElementById(
+            "talimTitle"
+        ).value.trim();
+
+    const content =
+        document.getElementById(
+            "talimContent"
+        ).value.trim();
+
+    const reference =
+        document.getElementById(
+            "talimReference"
+        ).value.trim();
+
+
+    if (!title || !content) {
+
+        alert(
+            "শিরোনাম এবং তালিম লিখুন।"
+        );
+
+        return;
+
+    }
+
+
+    const newPost = {
+
+        title: title,
+
+        content: content,
+
+        reference:
+            reference || "উৎস উল্লেখ করা হয়নি",
+
+        date:
+            new Date().toLocaleDateString(
+                "bn-BD"
+            )
+
+    };
+
+
+    talimPosts.unshift(newPost);
+
+
+    localStorage.setItem(
+
+        "islam_talim_posts",
+
+        JSON.stringify(talimPosts)
+
+    );
+
+
+    document.getElementById(
+        "talimTitle"
+    ).value = "";
+
+    document.getElementById(
+        "talimContent"
+    ).value = "";
+
+    document.getElementById(
+        "talimReference"
+    ).value = "";
+
+
+    closeTalim();
+
+    renderTalim();
+
+}
+
+
+/* ============================= */
+/* নিরাপদ HTML */
+/* ============================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* ============================= */
+/* চালু করা */
+/* ============================= */
+
+renderTalim();
+
+</script>
     
