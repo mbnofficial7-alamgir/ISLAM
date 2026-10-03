@@ -650,7 +650,6 @@ function openFeature(name) {
 }
   let currentQiblaAngle = 0;
 let compassListening = false;
-
 function openQibla(){
 
     document.getElementById("modalTitle").innerText =
@@ -660,8 +659,8 @@ function openQibla(){
         <div style="text-align:center">
 
             <div style="
-                font-size:65px;
-                margin:10px;
+                font-size:60px;
+                margin:8px;
             ">
                 🕋
             </div>
@@ -670,75 +669,95 @@ function openQibla(){
                 📍 আপনার অবস্থান নেওয়া হচ্ছে...
             </p>
 
-            <!-- সুন্দর কম্পাস -->
             <div style="
                 position:relative;
                 margin:15px auto;
-                width:210px;
-                height:210px;
+                width:220px;
+                height:220px;
                 border-radius:50%;
                 border:8px solid #bde9ff;
-                background:#f8fdff;
-                box-shadow:0 3px 12px rgba(0,0,0,.15);
-                display:flex;
-                align-items:center;
-                justify-content:center;
+                background:#ffffff;
+                box-shadow:0 3px 12px rgba(0,0,0,.18);
             ">
 
-                <!-- দিকের অক্ষর -->
-                <span style="
+                <!-- উত্তর -->
+                <div style="
                     position:absolute;
                     top:8px;
-                    font-size:20px;
+                    left:50%;
+                    transform:translateX(-50%);
+                    font-size:22px;
                     font-weight:bold;
-                    color:#d00;
-                ">N</span>
+                    color:red;
+                    z-index:5;
+                ">N</div>
 
-                <span style="
+                <!-- পূর্ব -->
+                <div style="
                     position:absolute;
-                    right:8px;
-                    font-size:20px;
+                    right:10px;
+                    top:50%;
+                    transform:translateY(-50%);
+                    font-size:22px;
                     font-weight:bold;
-                ">E</span>
+                    z-index:5;
+                ">E</div>
 
-                <span style="
+                <!-- দক্ষিণ -->
+                <div style="
                     position:absolute;
                     bottom:8px;
-                    font-size:20px;
+                    left:50%;
+                    transform:translateX(-50%);
+                    font-size:22px;
                     font-weight:bold;
-                ">S</span>
+                    z-index:5;
+                ">S</div>
 
-                <span style="
+                <!-- পশ্চিম -->
+                <div style="
                     position:absolute;
-                    left:8px;
-                    font-size:20px;
+                    left:10px;
+                    top:50%;
+                    transform:translateY(-50%);
+                    font-size:22px;
                     font-weight:bold;
-                ">W</span>
+                    z-index:5;
+                ">W</div>
 
-                <!-- কিবলার তীর -->
+                <!-- কম্পাসের তীর -->
                 <div id="qiblaCompass"
-                     style="
-                     font-size:72px;
-                     line-height:1;
-                     transition:transform .15s linear;
-                     ">
+                    style="
+                    position:absolute;
+                    left:50%;
+                    top:50%;
+                    transform:translate(-50%,-50%);
+                    font-size:70px;
+                    line-height:1;
+                    transition:transform .15s linear;
+                    z-index:3;
+                    ">
                     ⬆️
                 </div>
 
                 <!-- মাঝের বিন্দু -->
                 <div style="
                     position:absolute;
+                    left:50%;
+                    top:50%;
                     width:14px;
                     height:14px;
+                    transform:translate(-50%,-50%);
                     border-radius:50%;
                     background:#222;
                     border:3px solid white;
+                    z-index:6;
                 "></div>
 
             </div>
 
             <p style="
-                margin:5px 0;
+                margin:8px 0 2px;
                 font-weight:bold;
             ">
                 🕋 কিবলার দিক
@@ -756,7 +775,6 @@ function openQibla(){
                 background:#bde9ff;
                 font-weight:bold;
                 font-size:16px;
-                margin-top:5px;
                 ">
                 🧭 কম্পাস চালু করুন
             </button>
@@ -769,6 +787,9 @@ function openQibla(){
 
     calculateQibla();
   }
+
+
+
 
 
 function calculateQibla(){
@@ -918,39 +939,4 @@ function startCompass(qiblaAngle){
 
         // iPhone / কিছু ব্রাউজারের কম্পাস
         if(
-            event.webkitCompassHeading !== undefined &&
-            event.webkitCompassHeading !== null
-        ){
-
-            heading = event.webkitCompassHeading;
-
-        }
-
-        // Android absolute orientation
-        else if(
-            event.absolute === true &&
-            event.alpha !== null
-        ){
-
-            heading = 360 - event.alpha;
-
-        }
-
-        // সাধারণ orientation
-        else if(event.alpha !== null){
-
-            heading = 360 - event.alpha;
-
-        }
-
-        if(heading === null){
-
-            document.getElementById("qiblaStatus").innerText =
-            "⚠️ ফোনের কম্পাসের তথ্য পাওয়া যাচ্ছে না।";
-
-            return;
-        }
-
-        heading = (heading + 360) % 360;
-
-  
+            event.webkitCompassHeading !== undefined 
