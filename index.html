@@ -860,6 +860,20 @@ function openQibla(){
             <p id="qiblaDirection">
                 কিবলার দিক হিসাব করা হচ্ছে...
             </p>
+              <div style="
+    margin:10px auto;
+    padding:8px;
+    border-radius:10px;
+    background:#f0faff;
+    font-size:15px;
+    font-weight:bold;
+    color:#111;
+">
+    🧭 উত্তর: N &nbsp; | &nbsp;
+    পূর্ব: E &nbsp; | &nbsp;
+    দক্ষিণ: S &nbsp; | &nbsp;
+    পশ্চিম: W
+</div>
 
             <button onclick="requestCompassPermission()"
                 style="
@@ -877,23 +891,4 @@ function openQibla(){
     `;
 
     document.getElementById("modal").style.display =
-    "flex";
-
-    calculateQibla();
-  }
-
-
-function calculateQibla(){
-
-    if(!navigator.geolocation){
-
-        document.getElementById("qiblaStatus").innerText =
-        "❌ আপনার ডিভাইসে GPS সাপোর্ট নেই।";
-
-        return;
-    }
-
-
-    navigator.geolocation.getCurrentPosition(
-
-        func
+  
