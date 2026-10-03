@@ -650,6 +650,7 @@ function openFeature(name) {
 }
   let currentQiblaAngle = 0;
 let compassListening = false;
+  
 function openQibla(){
 
     document.getElementById("modalTitle").innerText =
@@ -743,6 +744,119 @@ function openQibla(){
                 🕋 কিবলার দিক
             </p>
 
+function openQibla(){
+
+    document.getElementById("modalTitle").innerText =
+    "🕋 কিবলা দিকনির্দেশনা";
+
+    document.getElementById("modalText").innerHTML = `
+        <div style="text-align:center">
+
+            <div style="
+                font-size:60px;
+                margin:8px;
+            ">
+                🕋
+            </div>
+
+            <p id="qiblaStatus">
+                📍 আপনার অবস্থান নেওয়া হচ্ছে...
+            </p>
+
+            <div style="
+                position:relative;
+                margin:15px auto;
+                width:220px;
+                height:220px;
+                border-radius:50%;
+                border:8px solid #bde9ff;
+                background:#ffffff;
+                box-shadow:0 3px 12px rgba(0,0,0,.18);
+            ">
+
+                <!-- উত্তর -->
+                <div style="
+                    position:absolute;
+                    top:8px;
+                    left:50%;
+                    transform:translateX(-50%);
+                    font-size:22px;
+                    font-weight:bold;
+                    color:red;
+                    z-index:5;
+                ">N</div>
+
+                <!-- পূর্ব -->
+                <div style="
+                    position:absolute;
+                    right:10px;
+                    top:50%;
+                    transform:translateY(-50%);
+                    font-size:22px;
+                    font-weight:bold;
+                    z-index:5;
+                ">E</div>
+
+                <!-- দক্ষিণ -->
+                <div style="
+                    position:absolute;
+                    bottom:8px;
+                    left:50%;
+                    transform:translateX(-50%);
+                    font-size:22px;
+                    font-weight:bold;
+                    z-index:5;
+                ">S</div>
+
+                <!-- পশ্চিম -->
+                <div style="
+                    position:absolute;
+                    left:10px;
+                    top:50%;
+                    transform:translateY(-50%);
+                    font-size:22px;
+                    font-weight:bold;
+                    z-index:5;
+                ">W</div>
+
+                <!-- কম্পাসের তীর -->
+                <div id="qiblaCompass"
+                    style="
+                    position:absolute;
+                    left:50%;
+                    top:50%;
+                    transform:translate(-50%,-50%);
+                    font-size:70px;
+                    line-height:1;
+                    transition:transform .15s linear;
+                    z-index:3;
+                    ">
+                    ⬆️
+                </div>
+
+                <!-- মাঝের বিন্দু -->
+                <div style="
+                    position:absolute;
+                    left:50%;
+                    top:50%;
+                    width:14px;
+                    height:14px;
+                    transform:translate(-50%,-50%);
+                    border-radius:50%;
+                    background:#222;
+                    border:3px solid white;
+                    z-index:6;
+                "></div>
+
+            </div>
+
+            <p style="
+                margin:8px 0 2px;
+                font-weight:bold;
+            ">
+                🕋 কিবলার দিক
+            </p>
+
             <p id="qiblaDirection">
                 কিবলার দিক হিসাব করা হচ্ছে...
             </p>
@@ -755,7 +869,6 @@ function openQibla(){
                 background:#bde9ff;
                 font-weight:bold;
                 font-size:16px;
-                margin-top:5px;
                 ">
                 🧭 কম্পাস চালু করুন
             </button>
@@ -783,173 +896,4 @@ function calculateQibla(){
 
     navigator.geolocation.getCurrentPosition(
 
-        function(position){
-
-            const latitude =
-            position.coords.latitude;
-
-            const longitude =
-            position.coords.longitude;
-
-
-            /*
-            কাবা শরিফের অবস্থান
-            */
-
-            const kaabaLatitude =
-            21.4225;
-
-            const kaabaLongitude =
-            39.8262;
-
-
-            const lat1 =
-            latitude * Math.PI / 180;
-
-            const lat2 =
-            kaabaLatitude * Math.PI / 180;
-
-            const lon1 =
-            longitude * Math.PI / 180;
-
-            const lon2 =
-            kaabaLongitude * Math.PI / 180;
-
-
-            const y =
-            Math.sin(lon2-lon1) *
-            Math.cos(lat2);
-
-
-            const x =
-            Math.cos(lat1) *
-            Math.sin(lat2)
-            -
-            Math.sin(lat1) *
-            Math.cos(lat2) *
-            Math.cos(lon2-lon1);
-
-
-            let angle =
-            Math.atan2(y,x)
-            *180/Math.PI;
-
-
-            angle =
-            (angle + 360) % 360;
-          
-currentQiblaAngle = angle;
-
-            document.getElementById("qiblaStatus").innerText =
-            "📍 আপনার অবস্থান পাওয়া গেছে";
-
-
-            document.getElementById("qiblaDirection").innerHTML =
-            "🕋 কিবলার দিক<br><br>" +
-            "<strong style='font-size:28px'>" +
-            angle.toFixed(1) +
-            "°" +
-            "</strong>";
-
-        },
-
-        function(){
-
-            document.getElementById("qiblaStatus").innerText =
-            "❌ কিবলা নির্ণয়ের জন্য GPS অনুমতি দিন।";
-
-        }
-
-    );
-
-  }
-  function requestCompassPermission(){
-
-    const start = function(){
-
-        startCompass(currentQiblaAngle);
-
-    };
-
-
-    if(
-        typeof DeviceOrientationEvent !== "undefined" &&
-        typeof DeviceOrientationEvent.requestPermission === "function"
-    ){
-
-        DeviceOrientationEvent.requestPermission(true)
-
-        .then(function(permission){
-
-            if(permission === "granted"){
-
-                start();
-
-            }else{
-
-                document.getElementById("qiblaStatus").innerText =
-                "❌ কম্পাস ব্যবহারের অনুমতি দেওয়া হয়নি।";
-
-            }
-
-        })
-
-        .catch(function(){
-
-            document.getElementById("qiblaStatus").innerText =
-            "❌ কম্পাস অনুমতি নেওয়া যায়নি।";
-
-        });
-
-    }else{
-
-        start();
-
-    }
-  }
-function startCompass(qiblaAngle){
-
-    let lastHeading = null;
-
-    function handleCompass(event){
-
-        let heading = null;
-
-        // iPhone / কিছু ব্রাউজারের কম্পাস
-        if(
-            event.webkitCompassHeading !== undefined &&
-            event.webkitCompassHeading !== null
-        ){
-
-            heading = event.webkitCompassHeading;
-
-        }
-
-        // Android absolute orientation
-        else if(
-            event.absolute === true &&
-            event.alpha !== null
-        ){
-
-            heading = 360 - event.alpha;
-
-        }
-
-        // সাধারণ orientation
-        else if(event.alpha !== null){
-
-            heading = 360 - event.alpha;
-
-        }
-
-        if(heading === null){
-
-            document.getElementById("qiblaStatus").innerText =
-            "⚠️ ফোনের কম্পাসের তথ্য পাওয়া যাচ্ছে না।";
-
-            return;
-        }
-
-        heading = (heading + 360) % 360;
-
-   
+        func
