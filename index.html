@@ -908,8 +908,8 @@ function calculateQibla(){
 
 function startCompass(qiblaAngle){
 
-    // আগের কম্পাস listener থাকলে বন্ধ করুন
     if(startCompass.oldHandler){
+
         window.removeEventListener(
             "deviceorientationabsolute",
             startCompass.oldHandler,
@@ -919,11 +919,12 @@ function startCompass(qiblaAngle){
         window.removeEventListener(
             "deviceorientation",
             startCompass.oldHandler,
-true
+            true
         );
     }
 
     let lastHeading = null;
+    let lastEventTime = 0;
 
     function smoothAngle(oldAngle, newAngle){
 
@@ -941,38 +942,58 @@ true
             difference += 360;
         }
 
-        return oldAngle + difference * 0.12;
+        return oldAngle + difference * 0.18;
     }
 
     function handleCompass(event){
 
+        const now = Date.now();
+
+        if(now - lastEventTime < 30){
+            return;
+        }
+
+        lastEventTime = now;
+
         let heading = null;
 
-        // কিছু ফোনে এটি পাওয়া যায়
         if(
             event.webkitCompassHeading !== undefined &&
             event.webkitCompassHeading !== null
         ){
-            heading = event.webkitCompassHeading;
-        }
 
-        // Android ফোনের জন্য
-        else if(event.alpha !== null){
+            heading = event.webkitCompassHeading;
+
+        }
+        else if(
+            event.alpha !== null &&
+            event.alpha !== undefined
+        ){
 
             heading = 360 - event.alpha;
+
+            if(
+                screen.orientation &&
+                typeof screen.orientation.angle === "number"
+            ){
+
+                heading += screen.orientation.angle;
+
+            }
         }
 
         if(heading === null){
             return;
         }
 
-        heading = (heading + 360) % 360;
+        heading =
+        (heading + 360) % 360;
 
-        // কাঁপুনি কমানো
         let smoothHeading =
         smoothAngle(lastHeading, heading);
 
-        lastHeading = smoothHeading;
+        lastHeading =
+        smoothHeading;
 
         smoothHeading =
         (smoothHeading + 360) % 360;
@@ -984,13 +1005,13 @@ true
             return;
         }
 
-        // N E S W যেই বৃত্তের মধ্যে আছে
-        const dial = arrow.parentElement;
+        const dial =
+        arrow.parentElement;
 
         if(dial){
 
             dial.style.transition =
-            "transform 0.12s linear";
+            "transform 0.15s linear";
 
             dial.style.transform =
             "rotate(" +
@@ -998,16 +1019,14 @@ true
             "deg)";
         }
 
-        // কিবলার তীর
         arrow.style.transition =
-        "transform 0.12s linear";
+        "transform 0.15s linear";
 
         arrow.style.transform =
         "rotate(" +
         qiblaAngle +
         "deg)";
 
-        // ফোনের বর্তমান দিক দেখানো
         const status =
         document.getElementById("qiblaStatus");
 
@@ -1020,8 +1039,8 @@ true
         }
     }
 
-    // নতুন listener সংরক্ষণ
-    startCompass.oldHandler = handleCompass;
+    startCompass.oldHandler =
+    handleCompass;
 
     window.addEventListener(
         "deviceorientationabsolute",
@@ -1036,8 +1055,9 @@ true
     );
 
     document.getElementById("qiblaStatus").innerText =
-    "🧭 কম্পাস চালু হয়েছে — ফোন ধীরে ধীরে ঘোরান";
+    "🧭 কম্পাস চালু হয়েছে — ফোন ধীরে ঘোরান";
   }
+
 
 
 /* Talim */
