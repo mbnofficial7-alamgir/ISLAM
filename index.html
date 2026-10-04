@@ -731,14 +731,16 @@ function openQibla(){
 
                 <!-- কম্পাসের তীর -->
                 <div id="qiblaCompass"
-                    style="
-                    font-size:70px;
-                    line-height:1;
-                    transition:transform .15s linear;
-                    z-index:3;
-                ">
-                    ⬆️
-                </div>
+    style="
+    font-size:80px;
+    line-height:1;
+    font-weight:bold;
+    color:#111;
+    transition:transform .12s linear;
+    z-index:3;
+">
+    ↑
+</div>
 
                 <!-- মাঝের বিন্দু -->
                 <div style="
@@ -799,6 +801,8 @@ function calculateQibla(){
         return;
     }
 
+    document.getElementById("qiblaStatus").innerText =
+    "📍 GPS থেকে আপনার অবস্থান নেওয়া হচ্ছে...";
 
     navigator.geolocation.getCurrentPosition(
 
@@ -810,17 +814,8 @@ function calculateQibla(){
             const longitude =
             position.coords.longitude;
 
-
-            /*
-            কাবা শরিফের অবস্থান
-            */
-
-            const kaabaLatitude =
-            21.4225;
-
-            const kaabaLongitude =
-            39.8262;
-
+            const kaabaLatitude = 21.4225;
+            const kaabaLongitude = 39.8262;
 
             const lat1 =
             latitude * Math.PI / 180;
@@ -834,11 +829,9 @@ function calculateQibla(){
             const lon2 =
             kaabaLongitude * Math.PI / 180;
 
-
             const y =
-            Math.sin(lon2-lon1) *
+            Math.sin(lon2 - lon1) *
             Math.cos(lat2);
-
 
             const x =
             Math.cos(lat1) *
@@ -846,22 +839,19 @@ function calculateQibla(){
             -
             Math.sin(lat1) *
             Math.cos(lat2) *
-            Math.cos(lon2-lon1);
-
+            Math.cos(lon2 - lon1);
 
             let angle =
-            Math.atan2(y,x)
-            *180/Math.PI;
-
+            Math.atan2(y, x) *
+            180 / Math.PI;
 
             angle =
             (angle + 360) % 360;
-          
-currentQiblaAngle = angle;
+
+            currentQiblaAngle = angle;
 
             document.getElementById("qiblaStatus").innerText =
             "📍 আপনার অবস্থান পাওয়া গেছে";
-
 
             document.getElementById("qiblaDirection").innerHTML =
             "🕋 কিবলার দিক<br><br>" +
@@ -872,60 +862,50 @@ currentQiblaAngle = angle;
 
         },
 
-        function(){
+        function(error){
 
-            document.getElementById("qiblaStatus").innerText =
-            "❌ কিবলা নির্ণয়ের জন্য GPS অনুমতি দিন।";
+            if(error.code === 1){
 
+                document.getElementById("qiblaStatus").innerText =
+                "❌ GPS ব্যবহারের অনুমতি দেওয়া হয়নি।";
+
+            }
+
+            else if(error.code === 2){
+
+                document.getElementById("qiblaStatus").innerText =
+                "❌ GPS থেকে অবস্থান পাওয়া যাচ্ছে না।";
+
+            }
+
+            else if(error.code === 3){
+
+                document.getElementById("qiblaStatus").innerText =
+                "❌ GPS পেতে সময় শেষ হয়ে গেছে।";
+
+            }
+
+            else{
+
+                document.getElementById("qiblaStatus").innerText =
+                "❌ GPS থেকে অবস্থান নেওয়া যায়নি।";
+
+            }
+
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 60000
         }
 
     );
 
   }
-  function requestCompassPermission(){
-
-    const start = function(){
-
-        startCompass(currentQiblaAngle);
-
-    };
 
 
-    if(
-        typeof DeviceOrientationEvent !== "undefined" &&
-        typeof DeviceOrientationEvent.requestPermission === "function"
-    ){
 
-        DeviceOrientationEvent.requestPermission(true)
-
-        .then(function(permission){
-
-            if(permission === "granted"){
-
-                start();
-
-            }else{
-
-                document.getElementById("qiblaStatus").innerText =
-                "❌ কম্পাস ব্যবহারের অনুমতি দেওয়া হয়নি।";
-
-            }
-
-        })
-
-        .catch(function(){
-
-            document.getElementById("qiblaStatus").innerText =
-            "❌ কম্পাস অনুমতি নেওয়া যায়নি।";
-
-        });
-
-    }else{
-
-        start();
-
-    }
-  }
 function startCompass(qiblaAngle){
 
     // আগের কম্পাস listener থাকলে বন্ধ করুন
@@ -939,7 +919,7 @@ function startCompass(qiblaAngle){
         window.removeEventListener(
             "deviceorientation",
             startCompass.oldHandler,
-            true
+true
         );
     }
 
