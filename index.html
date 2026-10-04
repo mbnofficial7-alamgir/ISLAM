@@ -911,49 +911,19 @@ function startCompass(qiblaAngle){
     if(startCompass.oldHandler){
 
         window.removeEventListener(
-            "deviceorientationabsolute",
+            "deviceorientation",
             startCompass.oldHandler,
             true
         );
 
         window.removeEventListener(
-            "deviceorientation",
+            "deviceorientationabsolute",
             startCompass.oldHandler,
             true
         );
     }
 
-    let lastHeading = null;
-    let lastEventTime = 0;
-
-    function smoothAngle(oldAngle, newAngle){
-
-        if(oldAngle === null){
-            return newAngle;
-        }
-
-        let difference = newAngle - oldAngle;
-
-        if(difference > 180){
-            difference -= 360;
-        }
-
-        if(difference < -180){
-            difference += 360;
-        }
-
-        return oldAngle + difference * 0.18;
-    }
-
     function handleCompass(event){
-
-        const now = Date.now();
-
-        if(now - lastEventTime < 30){
-            return;
-        }
-
-        lastEventTime = now;
 
         let heading = null;
 
@@ -964,89 +934,47 @@ function startCompass(qiblaAngle){
 
             heading = event.webkitCompassHeading;
 
-        }
-        else if(
+        }else if(
             event.alpha !== null &&
             event.alpha !== undefined
         ){
 
             heading = 360 - event.alpha;
-
-            if(
-                screen.orientation &&
-                typeof screen.orientation.angle === "number"
-            ){
-
-                heading += screen.orientation.angle;
-
-            }
         }
 
+        const status =
+        document.getElementById("qiblaStatus");
+
         if(heading === null){
+
+            status.innerText =
+            "❌ কম্পাস সেন্সর থেকে ডেটা আসছে না।";
+
             return;
         }
 
         heading =
         (heading + 360) % 360;
 
-        let smoothHeading =
-        smoothAngle(lastHeading, heading);
-
-        lastHeading =
-        smoothHeading;
-
-        smoothHeading =
-        (smoothHeading + 360) % 360;
-
-        const arrow =
-        document.getElementById("qiblaCompass");
-
-        if(!arrow){
-            return;
-        }
+        status.innerText =
+        "🧭 কম্পাস ডেটা পাওয়া গেছে — " +
+        Math.round(heading) +
+        "°";
 
         const dial =
-        arrow.parentElement;
+        document.getElementById("qiblaCompass")
+        ?.parentElement;
 
         if(dial){
 
-            dial.style.transition =
-            "transform 0.15s linear";
-
             dial.style.transform =
-            "rotate(" +
-            (-smoothHeading) +
-            "deg)";
+            "rotate(" + (-heading) + "deg)";
         }
 
-        arrow.style.transition =
-        "transform 0.15s linear";
-
-        arrow.style.transform =
-        "rotate(" +
-        qiblaAngle +
-        "deg)";
-
-        const status =
-        document.getElementById("qiblaStatus");
-
-        if(status){
-
-            status.innerText =
-            "🧭 কম্পাস চলছে — ফোনের দিক: " +
-            Math.round(smoothHeading) +
-            "°";
-        }
     }
 
     startCompass.oldHandler =
     handleCompass;
-
-    window.addEventListener(
-        "deviceorientationabsolute",
-        handleCompass,
-        true
-    );
 
     window.addEventListener(
         "deviceorientation",
@@ -1054,9 +982,16 @@ function startCompass(qiblaAngle){
         true
     );
 
+    window.addEventListener(
+        "deviceorientationabsolute",
+        handleCompass,
+        true
+    );
+
     document.getElementById("qiblaStatus").innerText =
-    "🧭 কম্পাস চালু হয়েছে — ফোন ধীরে ঘোরান";
+    "🧭 ফোন ঘোরান — কম্পাস পরীক্ষা হচ্ছে...";
   }
+
 
 
 
