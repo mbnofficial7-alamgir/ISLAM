@@ -923,27 +923,6 @@ function startCompass(qiblaAngle){
         );
     }
 
-    let lastHeading = null;
-
-    function smoothAngle(oldAngle, newAngle){
-
-        if(oldAngle === null){
-            return newAngle;
-        }
-
-        let difference = newAngle - oldAngle;
-
-        if(difference > 180){
-            difference -= 360;
-        }
-
-        if(difference < -180){
-            difference += 360;
-        }
-
-        return oldAngle + difference * 0.05;
-    }
-
     function handleCompass(event){
 
         let heading = null;
@@ -955,9 +934,7 @@ function startCompass(qiblaAngle){
 
             heading = event.webkitCompassHeading;
 
-        }
-
-        else if(
+        }else if(
             event.alpha !== null &&
             event.alpha !== undefined
         ){
@@ -965,10 +942,13 @@ function startCompass(qiblaAngle){
             heading = 360 - event.alpha;
         }
 
-        if(heading === null){
+        const status =
+        document.getElementById("qiblaStatus");
 
-            const status =
-            document.getElementById("qiblaStatus");
+        const arrow =
+        document.getElementById("qiblaCompass");
+
+        if(heading === null){
 
             if(status){
                 status.innerText =
@@ -981,35 +961,18 @@ function startCompass(qiblaAngle){
         heading =
         (heading + 360) % 360;
 
-        let smoothHeading =
-        smoothAngle(lastHeading, heading);
-
-        lastHeading =
-        smoothHeading;
-
-        smoothHeading =
-        (smoothHeading + 360) % 360;
-
-        const status =
-        document.getElementById("qiblaStatus");
-
         if(status){
 
             status.innerText =
             "🧭 কম্পাস চলছে — ফোনের দিক: " +
-            Math.round(smoothHeading) +
+            Math.round(heading) +
             "°";
         }
 
-        const arrow =
-        document.getElementById("qiblaCompass");
-
-        if(!arrow){
-            return;
-        }
+        /* পুরো কম্পাস ঘুরবে */
 
         const dial =
-        arrow.parentElement;
+        arrow ? arrow.parentElement : null;
 
         if(dial){
 
@@ -1018,17 +981,25 @@ function startCompass(qiblaAngle){
 
             dial.style.transform =
             "rotate(" +
-            (-smoothHeading) +
+            (-heading) +
             "deg)";
         }
 
-        arrow.style.transition =
-        "transform 0.15s linear";
+        /* কিবলার তীর */
 
-        arrow.style.transform =
-        "rotate(" +
-        qiblaAngle +
-        "deg)";
+        if(arrow){
+
+            arrow.style.transition =
+            "transform 0.15s linear";
+
+            arrow.style.transform =
+            "rotate(" +
+            qiblaAngle +
+            "deg)";
+
+            arrow.style.transformOrigin =
+            "center center";
+        }
     }
 
     startCompass.oldHandler =
@@ -1046,15 +1017,10 @@ function startCompass(qiblaAngle){
         true
     );
 
-    const status =
-    document.getElementById("qiblaStatus");
-
-    if(status){
-
-        status.innerText =
-        "🧭 কম্পাস চালু হয়েছে — ফোন ধীরে ঘোরান";
-    }
+    document.getElementById("qiblaStatus").innerText =
+    "🧭 কম্পাস চালু হয়েছে — ফোন ধীরে ঘোরান";
   }
+
 
 
 
