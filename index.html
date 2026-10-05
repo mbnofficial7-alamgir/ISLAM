@@ -766,7 +766,7 @@ function openQibla(){
                 কিবলার দিক হিসাব করা হচ্ছে...
             </p>
 
-            <button onclick="startCompass(currentQiblaAngle)"
+<button onclick="startCompass(currentQiblaAngle)"
                 style="
                 padding:11px 20px;
                 border:0;
@@ -923,6 +923,27 @@ function startCompass(qiblaAngle){
         );
     }
 
+    let lastHeading = null;
+
+    function smoothAngle(oldAngle, newAngle){
+
+        if(oldAngle === null){
+            return newAngle;
+        }
+
+        let difference = newAngle - oldAngle;
+
+        if(difference > 180){
+            difference -= 360;
+        }
+
+        if(difference < -180){
+            difference += 360;
+        }
+
+        return oldAngle + difference * 0.05;
+    }
+
     function handleCompass(event){
 
         let heading = null;
@@ -934,7 +955,9 @@ function startCompass(qiblaAngle){
 
             heading = event.webkitCompassHeading;
 
-        }else if(
+        }
+
+        else if(
             event.alpha !== null &&
             event.alpha !== undefined
         ){
@@ -942,13 +965,15 @@ function startCompass(qiblaAngle){
             heading = 360 - event.alpha;
         }
 
-        const status =
-        document.getElementById("qiblaStatus");
-
         if(heading === null){
 
-            status.innerText =
-            "❌ কম্পাস সেন্সর থেকে ডেটা আসছে না।";
+            const status =
+            document.getElementById("qiblaStatus");
+
+            if(status){
+                status.innerText =
+                "❌ কম্পাস সেন্সর থেকে ডেটা আসছে না।";
+            }
 
             return;
         }
@@ -956,21 +981,54 @@ function startCompass(qiblaAngle){
         heading =
         (heading + 360) % 360;
 
-        status.innerText =
-        "🧭 কম্পাস ডেটা পাওয়া গেছে — " +
-        Math.round(heading) +
-        "°";
+        let smoothHeading =
+        smoothAngle(lastHeading, heading);
+
+        lastHeading =
+        smoothHeading;
+
+        smoothHeading =
+        (smoothHeading + 360) % 360;
+
+        const status =
+        document.getElementById("qiblaStatus");
+
+        if(status){
+
+            status.innerText =
+            "🧭 কম্পাস চলছে — ফোনের দিক: " +
+            Math.round(smoothHeading) +
+            "°";
+        }
+
+        const arrow =
+        document.getElementById("qiblaCompass");
+
+        if(!arrow){
+            return;
+        }
 
         const dial =
-        document.getElementById("qiblaCompass")
-        ?.parentElement;
+        arrow.parentElement;
 
         if(dial){
 
+            dial.style.transition =
+            "transform 0.15s linear";
+
             dial.style.transform =
-            "rotate(" + (-heading) + "deg)";
+            "rotate(" +
+            (-smoothHeading) +
+            "deg)";
         }
 
+        arrow.style.transition =
+        "transform 0.15s linear";
+
+        arrow.style.transform =
+        "rotate(" +
+        qiblaAngle +
+        "deg)";
     }
 
     startCompass.oldHandler =
@@ -988,8 +1046,14 @@ function startCompass(qiblaAngle){
         true
     );
 
-    document.getElementById("qiblaStatus").innerText =
-    "🧭 ফোন ঘোরান — কম্পাস পরীক্ষা হচ্ছে...";
+    const status =
+    document.getElementById("qiblaStatus");
+
+    if(status){
+
+        status.innerText =
+        "🧭 কম্পাস চালু হয়েছে — ফোন ধীরে ঘোরান";
+    }
   }
 
 
