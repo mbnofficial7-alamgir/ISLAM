@@ -1018,19 +1018,21 @@ else if(
         document.getElementById("qiblaCompass");
 
         if(!compass){
-          const directions =
+            return;
+        }
+const directions =
 document.getElementById("compassDirections");
 
 if(directions){
+
+    directions.style.transition =
+    "transform 0.08s linear";
 
     directions.style.transform =
     "rotate(" +
     (-smoothHeading) +
     "deg)";
   }
-            return;
-        }
-
         
 
         compass.style.transition =
