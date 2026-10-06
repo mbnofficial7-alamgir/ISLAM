@@ -1018,6 +1018,16 @@ else if(
         document.getElementById("qiblaCompass");
 
         if(!compass){
+          const directions =
+document.getElementById("compassDirections");
+
+if(directions){
+
+    directions.style.transform =
+    "rotate(" +
+    (-smoothHeading) +
+    "deg)";
+  }
             return;
         }
 
