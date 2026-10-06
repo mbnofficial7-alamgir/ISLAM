@@ -948,21 +948,27 @@ function startCompass(qiblaAngle){
 
         let heading = null;
 
-        if(
-            event.webkitCompassHeading !== undefined &&
-            event.webkitCompassHeading !== null
-        ){
+if(
+    event.webkitCompassHeading !== undefined &&
+    event.webkitCompassHeading !== null
+){
 
-            heading = event.webkitCompassHeading;
+    heading = event.webkitCompassHeading;
 
-        }
-        else if(
-            event.alpha !== null &&
-            event.alpha !== undefined
-        ){
+}
+else if(
+    event.alpha !== null &&
+    event.alpha !== undefined
+){
 
-            heading = 360 - event.alpha;
-        }
+    heading = 360 - event.alpha;
+
+    if(screen.orientation){
+
+        heading =
+        heading + screen.orientation.angle;
+    }
+  }
 
         if(heading === null){
             return;
