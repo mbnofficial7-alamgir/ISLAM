@@ -941,7 +941,7 @@ function startCompass(qiblaAngle){
             difference += 360;
         }
 
-        return oldAngle + difference * 0.08;
+        return oldAngle + difference * 0.03;
     }
 
     function handleCompass(event){
@@ -998,27 +998,18 @@ function startCompass(qiblaAngle){
             return;
         }
 
-        const dial =
-        compass.parentElement;
-
-        if(dial){
-
-            dial.style.transition =
-            "transform 0.08s linear";
-
-            dial.style.transform =
-            "rotate(" +
-            (-smoothHeading) +
-            "deg)";
-        }
+        
 
         compass.style.transition =
         "transform 0.08s linear";
 
-        compass.style.transform =
-        "rotate(" +
-        qiblaAngle +
-        "deg)";
+const arrowAngle =
+qiblaAngle - smoothHeading;
+
+compass.style.transform =
+"rotate(" +
+arrowAngle +
+"deg)";
     }
 
     startCompass.oldHandler =
