@@ -684,63 +684,78 @@ function openQibla(){
                 overflow:hidden;
             ">
 
-                <!-- উত্তর -->
-                <div style="
+                <!-- N/E/S/W এর পুরো অংশ -->
+                <div id="compassDirections"
+                    style="
                     position:absolute;
-                    top:8px;
-                    left:50%;
-                    transform:translateX(-50%);
-                    font-size:22px;
-                    font-weight:bold;
-                    color:red;
+                    inset:0;
                     z-index:5;
-                ">N</div>
+                    transition:transform .12s linear;
+                ">
 
-                <!-- পূর্ব -->
-                <div style="
-                    position:absolute;
-                    right:10px;
-                    top:50%;
-                    transform:translateY(-50%);
-                    font-size:22px;
-                    font-weight:bold;
-                    z-index:5;
-                ">E</div>
+                    <!-- উত্তর -->
+                    <div style="
+                        position:absolute;
+                        top:8px;
+                        left:50%;
+                        transform:translateX(-50%);
+                        font-size:22px;
+                        font-weight:bold;
+                        color:red;
+                    ">
+                        N
+                    </div>
 
-                <!-- দক্ষিণ -->
-                <div style="
-                    position:absolute;
-                    bottom:8px;
-                    left:50%;
-                    transform:translateX(-50%);
-                    font-size:22px;
-                    font-weight:bold;
-                    z-index:5;
-                ">S</div>
+                    <!-- পূর্ব -->
+                    <div style="
+                        position:absolute;
+                        right:10px;
+                        top:50%;
+                        transform:translateY(-50%);
+                        font-size:22px;
+                        font-weight:bold;
+                    ">
+                        E
+                    </div>
 
-                <!-- পশ্চিম -->
-                <div style="
-                    position:absolute;
-                    left:10px;
-                    top:50%;
-                    transform:translateY(-50%);
-                    font-size:22px;
-                    font-weight:bold;
-                    z-index:5;
-                ">W</div>
+                    <!-- দক্ষিণ -->
+                    <div style="
+                        position:absolute;
+                        bottom:8px;
+                        left:50%;
+                        transform:translateX(-50%);
+                        font-size:22px;
+                        font-weight:bold;
+                    ">
+                        S
+                    </div>
+
+                    <!-- পশ্চিম -->
+                    <div style="
+                        position:absolute;
+                        left:10px;
+                        top:50%;
+                        transform:translateY(-50%);
+                        font-size:22px;
+                        font-weight:bold;
+                    ">
+                        W
+                    </div>
+
+                </div>
 
                 <!-- কম্পাসের তীর -->
                 <div id="qiblaCompass"
-    style="
-    font-size:80px;
-    line-height:1;
-    font-weight:bold;
-    color:#111;
-    transition:transform .12s linear;
-    z-index:3;
-">
-    ↑
-</div>
+                    style="
+                    font-size:80px;
+                    line-height:1;
+                    font-weight:bold;
+                    color:#111;
+                    transition:transform .12s linear;
+                    z-index:3;
+                ">
+                    ↑
+                </div>
 
                 <!-- মাঝের বিন্দু -->
                 <div style="
@@ -750,7 +765,7 @@ function openQibla(){
                     border-radius:50%;
                     background:#222;
                     border:3px solid white;
-                    z-index:4;
+                    z-index:6;
                 "></div>
 
             </div>
@@ -766,7 +781,8 @@ function openQibla(){
                 কিবলার দিক হিসাব করা হচ্ছে...
             </p>
 
-<button onclick="startCompass(currentQiblaAngle)"
+            <button
+                onclick="startCompass(currentQiblaAngle)"
                 style="
                 padding:11px 20px;
                 border:0;
@@ -785,6 +801,7 @@ function openQibla(){
 
     calculateQibla();
   }
+                    
 
 
 
