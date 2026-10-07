@@ -521,7 +521,7 @@ getPrayerTimes();
 
     <div class="menu">
 
-        <div class="card" onclick="openFeature('কুরআনের তাফসির')">
+        <div class="card" onclick="openQuranTafsir()">
             📖<br>কুরআনের তাফসির
         </div>
 
@@ -637,7 +637,368 @@ document.getElementById("date").innerHTML =
         day: "numeric"
     });
 
+/* Quran Tafsir */
+function openQuranTafsir() {
 
+    document.getElementById("modalTitle").innerText =
+        "📖 কুরআনের তাফসির";
+
+    document.getElementById("modalText").innerHTML = `
+        <div style="text-align:center;">
+
+            <p style="font-size:17px; margin-bottom:15px;">
+                📚 সূরা নির্বাচন করুন
+            </p>
+
+            <div id="surahList">
+
+    <div onclick="openSurah(1)">1. আল-ফাতিহা</div>
+    <div onclick="openSurah(2)">2. আল-বাকারা</div>
+    <div onclick="openSurah(3)">3. আলে ইমরান</div>
+    <div onclick="openSurah(4)">4. আন-নিসা</div>
+    <div onclick="openSurah(5)">5. আল-মায়িদাহ</div>
+    <div onclick="openSurah(6)">6. আল-আনআম</div>
+    <div onclick="openSurah(7)">7. আল-আরাফ</div>
+    <div onclick="openSurah(8)">8. আল-আনফাল</div>
+    <div onclick="openSurah(9)">9. আত-তাওবাহ</div>
+    <div onclick="openSurah(10)">10. ইউনুস</div>
+
+    <div onclick="openSurah(11)">11. হুদ</div>
+    <div onclick="openSurah(12)">12. ইউসুফ</div>
+    <div onclick="openSurah(13)">13. আর-রাদ</div>
+    <div onclick="openSurah(14)">14. ইবরাহিম</div>
+    <div onclick="openSurah(15)">15. আল-হিজর</div>
+    <div onclick="openSurah(16)">16. আন-নাহল</div>
+    <div onclick="openSurah(17)">17. আল-ইসরা</div>
+    <div onclick="openSurah(18)">18. আল-কাহফ</div>
+    <div onclick="openSurah(19)">19. মারইয়াম</div>
+    <div onclick="openSurah(20)">20. ত্ব-হা</div>
+
+    <div onclick="openSurah(21)">21. আল-আম্বিয়া</div>
+    <div onclick="openSurah(22)">22. আল-হাজ্জ</div>
+    <div onclick="openSurah(23)">23. আল-মুমিনুন</div>
+    <div onclick="openSurah(24)">24. আন-নূর</div>
+    <div onclick="openSurah(25)">25. আল-ফুরকান</div>
+    <div onclick="openSurah(26)">26. আশ-শুআরা</div>
+    <div onclick="openSurah(27)">27. আন-নামল</div>
+    <div onclick="openSurah(28)">28. আল-কাসাস</div>
+    <div onclick="openSurah(29)">29. আল-আনকাবুত</div>
+    <div onclick="openSurah(30)">30. আর-রূম</div>
+
+    <div onclick="openSurah(31)">31. লুকমান</div>
+    <div onclick="openSurah(32)">32. আস-সাজদাহ</div>
+    <div onclick="openSurah(33)">33. আল-আহযাব</div>
+    <div onclick="openSurah(34)">34. সাবা</div>
+    <div onclick="openSurah(35)">35. ফাতির</div>
+    <div onclick="openSurah(36)">36. ইয়াসিন</div>
+    <div onclick="openSurah(37)">37. আস-সাফফাত</div>
+    <div onclick="openSurah(38)">38. সোয়াদ</div>
+    <div onclick="openSurah(39)">39. আয-যুমার</div>
+    <div onclick="openSurah(40)">40. গাফির</div>
+
+    <div onclick="openSurah(41)">41. ফুসসিলাত</div>
+    <div onclick="openSurah(42)">42. আশ-শূরা</div>
+    <div onclick="openSurah(43)">43. আয-যুখরুফ</div>
+    <div onclick="openSurah(44)">44. আদ-দুখান</div>
+    <div onclick="openSurah(45)">45. আল-জাসিয়াহ</div>
+    <div onclick="openSurah(46)">46. আল-আহকাফ</div>
+    <div onclick="openSurah(47)">47. মুহাম্মদ</div>
+    <div onclick="openSurah(48)">48. আল-ফাতহ</div>
+    <div onclick="openSurah(49)">49. আল-হুজুরাত</div>
+    <div onclick="openSurah(50)">50. ক্বাফ</div>
+
+    <div onclick="openSurah(51)">51. আয-যারিয়াত</div>
+    <div onclick="openSurah(52)">52. আত-তূর</div>
+    <div onclick="openSurah(53)">53. আন-নাজম</div>
+    <div onclick="openSurah(54)">54. আল-কামার</div>
+    <div onclick="openSurah(55)">55. আর-রহমান</div>
+    <div onclick="openSurah(56)">56. আল-ওয়াকিয়াহ</div>
+    <div onclick="openSurah(57)">57. আল-হাদীদ</div>
+    <div onclick="openSurah(58)">58. আল-মুজাদালাহ</div>
+    <div onclick="openSurah(59)">59. আল-হাশর</div>
+    <div onclick="openSurah(60)">60. আল-মুমতাহিনাহ</div>
+
+    <div onclick="openSurah(61)">61. আস-সাফ</div>
+    <div onclick="openSurah(62)">62. আল-জুমুআহ</div>
+    <div onclick="openSurah(63)">63. আল-মুনাফিকুন</div>
+    <div onclick="openSurah(64)">64. আত-তাগাবুন</div>
+    <div onclick="openSurah(65)">65. আত-তালাক</div>
+    <div onclick="openSurah(66)">66. আত-তাহরীম</div>
+    <div onclick="openSurah(67)">67. আল-মুলক</div>
+    <div onclick="openSurah(68)">68. আল-ক্বালাম</div>
+    <div onclick="openSurah(69)">69. আল-হাক্কাহ</div>
+    <div onclick="openSurah(70)">70. আল-মাআরিজ</div>
+
+    <div onclick="openSurah(71)">71. নূহ</div>
+    <div onclick="openSurah(72)">72. আল-জিন</div>
+    <div onclick="openSurah(73)">73. আল-মুযযাম্মিল</div>
+    <div onclick="openSurah(74)">74. আল-মুদ্দাসসির</div>
+    <div onclick="openSurah(75)">75. আল-কিয়ামাহ</div>
+    <div onclick="openSurah(76)">76. আল-ইনসান</div>
+    <div onclick="openSurah(77)">77. আল-মুরসালাত</div>
+    <div onclick="openSurah(78)">78. আন-নাবা</div>
+    <div onclick="openSurah(79)">79. আন-নাযিয়াত</div>
+    <div onclick="openSurah(80)">80. আবাসা</div>
+
+    <div onclick="openSurah(81)">81. আত-তাকভীর</div>
+    <div onclick="openSurah(82)">82. আল-ইনফিতার</div>
+    <div onclick="openSurah(83)">83. আল-মুতাফফিফীন</div>
+    <div onclick="openSurah(84)">84. আল-ইনশিকাক</div>
+    <div onclick="openSurah(85)">85. আল-বুরূজ</div>
+    <div onclick="openSurah(86)">86. আত-তারিক</div>
+    <div onclick="openSurah(87)">87. আল-আলা</div>
+    <div onclick="openSurah(88)">88. আল-গাশিয়াহ</div>
+    <div onclick="openSurah(89)">89. আল-ফজর</div>
+    <div onclick="openSurah(90)">90. আল-বালাদ</div>
+
+    <div onclick="openSurah(91)">91. আশ-শামস</div>
+    <div onclick="openSurah(92)">92. আল-লাইল</div>
+    <div onclick="openSurah(93)">93. আদ-দুহা</div>
+    <div onclick="openSurah(94)">94. আশ-শারহ</div>
+    <div onclick="openSurah(95)">95. আত-তীন</div>
+    <div onclick="openSurah(96)">96. আল-আলাক</div>
+    <div onclick="openSurah(97)">97. আল-কদর</div>
+    <div onclick="openSurah(98)">98. আল-বাইয়্যিনাহ</div>
+    <div onclick="openSurah(99)">99. আয-যিলযাল</div>
+    <div onclick="openSurah(100)">100. আল-আদিয়াত</div>
+
+    <div onclick="openSurah(101)">101. আল-কারিয়াহ</div>
+    <div onclick="openSurah(102)">102. আত-তাকাসুর</div>
+    <div onclick="openSurah(103)">103. আল-আসর</div>
+    <div onclick="openSurah(104)">104. আল-হুমাযাহ</div>
+    <div onclick="openSurah(105)">105. আল-ফীল</div>
+    <div onclick="openSurah(106)">106. কুরাইশ</div>
+    <div onclick="openSurah(107)">107. আল-মাউন</div>
+    <div onclick="openSurah(108)">108. আল-কাওসার</div>
+    <div onclick="openSurah(109)">109. আল-কাফিরুন</div>
+    <div onclick="openSurah(110)">110. আন-নাসর</div>
+    <div onclick="openSurah(111)">111. আল-মাসাদ</div>
+    <div onclick="openSurah(112)">112. আল-ইখলাস</div>
+    <div onclick="openSurah(113)">113. আল-ফালাক</div>
+    <div onclick="openSurah(114)">114. আন-নাস</div>
+
+</div>
+
+        </div>
+    `;
+
+    document.getElementById("modal").style.display = "flex";
+  }
+  function openSurah(number) {
+    fetch("https://api.alquran.cloud/v1/surah/" + number)
+        .then(response => response.json())
+        .then(data => {
+
+            const surah = data.data;
+
+            document.getElementById("modalTitle").innerText =
+                "📖 " + surah.name;
+
+            let ayahsHTML = "";
+
+            surah.ayahs.forEach(ayah => {
+
+                ayahsHTML += `
+                    <div style="
+                        background:#ffffff;
+                        margin:10px 0;
+                        padding:15px;
+                        border-radius:12px;
+                        text-align:right;
+                        direction:rtl;
+                    ">
+
+                        <div style="
+                            font-size:24px;
+                            line-height:2;
+                            margin-bottom:8px;
+                        ">
+                            ${ayah.text}
+                        </div>
+
+                        <div style="
+                            text-align:left;
+                            direction:ltr;
+                            font-size:14px;
+                        ">
+                            আয়াত ${ayah.numberInSurah}
+                        </div>
+
+                    </div>
+                `;
+            });
+
+            document.getElementById("modalText").innerHTML =
+                ayahsHTML;
+
+            document.getElementById("modal").style.display = "flex";
+        })
+        .catch(error => {
+
+            document.getElementById("modalText").innerHTML =
+                "❌ কুরআনের আয়াত লোড করা যায়নি।<br>ইন্টারনেট সংযোগ পরীক্ষা করুন।";
+
+            document.getElementById("modal").style.display = "flex";
+
+            console.error(error);
+        });
+    const surahNames = {
+        1: "আল-ফাতিহা",
+        2: "আল-বাকারা",
+        3: "আলে ইমরান",
+        4: "আন-নিসা",
+        5: "আল-মায়িদাহ",
+        6: "আল-আনআম",
+        7: "আল-আরাফ",
+        8: "আল-আনফাল",
+        9: "আত-তাওবাহ",
+        10: "ইউনুস",
+        11: "হুদ",
+        12: "ইউসুফ",
+        13: "আর-রাদ",
+        14: "ইবরাহিম",
+        15: "আল-হিজর",
+        16: "আন-নাহল",
+        17: "আল-ইসরা",
+        18: "আল-কাহফ",
+        19: "মারইয়াম",
+        20: "ত্ব-হা",
+        21: "আল-আম্বিয়া",
+        22: "আল-হাজ্জ",
+        23: "আল-মুমিনুন",
+        24: "আন-নূর",
+        25: "আল-ফুরকান",
+        26: "আশ-শুআরা",
+        27: "আন-নামল",
+        28: "আল-কাসাস",
+        29: "আল-আনকাবুত",
+        30: "আর-রূম",
+        31: "লুকমান",
+        32: "আস-সাজদাহ",
+        33: "আল-আহযাব",
+        34: "সাবা",
+        35: "ফাতির",
+        36: "ইয়াসিন",
+        37: "আস-সাফফাত",
+        38: "সোয়াদ",
+        39: "আয-যুমার",
+        40: "গাফির",
+        41: "ফুসসিলাত",
+        42: "আশ-শূরা",
+        43: "আয-যুখরুফ",
+        44: "আদ-দুখান",
+        45: "আল-জাসিয়াহ",
+        46: "আল-আহকাফ",
+        47: "মুহাম্মদ",
+        48: "আল-ফাতহ",
+        49: "আল-হুজুরাত",
+        50: "ক্বাফ",
+        51: "আয-যারিয়াত",
+        52: "আত-তূর",
+        53: "আন-নাজম",
+        54: "আল-কামার",
+        55: "আর-রহমান",
+        56: "আল-ওয়াকিয়াহ",
+        57: "আল-হাদীদ",
+        58: "আল-মুজাদালাহ",
+        59: "আল-হাশর",
+        60: "আল-মুমতাহিনাহ",
+        61: "আস-সাফ",
+        62: "আল-জুমুআহ",
+        63: "আল-মুনাফিকুন",
+        64: "আত-তাগাবুন",
+        65: "আত-তালাক",
+        66: "আত-তাহরীম",
+        67: "আল-মুলক",
+        68: "আল-ক্বালাম",
+        69: "আল-হাক্কাহ",
+        70: "আল-মাআরিজ",
+        71: "নূহ",
+        72: "আল-জিন",
+        73: "আল-মুযযাম্মিল",
+        74: "আল-মুদ্দাসসির",
+        75: "আল-কিয়ামাহ",
+        76: "আল-ইনসান",
+        77: "আল-মুরসালাত",
+        78: "আন-নাবা",
+        79: "আন-নাযিয়াত",
+        80: "আবাসা",
+        81: "আত-তাকভীর",
+        82: "আল-ইনফিতার",
+        83: "আল-মুতাফফিফীন",
+        84: "আল-ইনশিকাক",
+        85: "আল-বুরূজ",
+        86: "আত-তারিক",
+        87: "আল-আলা",
+        88: "আল-গাশিয়াহ",
+        89: "আল-ফজর",
+        90: "আল-বালাদ",
+        91: "আশ-শামস",
+        92: "আল-লাইল",
+        93: "আদ-দুহা",
+        94: "আশ-শারহ",
+        95: "আত-তীন",
+        96: "আল-আলাক",
+        97: "আল-কদর",
+        98: "আল-বাইয়্যিনাহ",
+        99: "আয-যিলযাল",
+        100: "আল-আদিয়াত",
+        101: "আল-কারিয়াহ",
+        102: "আত-তাকাসুর",
+        103: "আল-আসর",
+        104: "আল-হুমাযাহ",
+        105: "আল-ফীল",
+        106: "কুরাইশ",
+        107: "আল-মাউন",
+        108: "আল-কাওসার",
+        109: "আল-কাফিরুন",
+        110: "আন-নাসর",
+        111: "আল-মাসাদ",
+        112: "আল-ইখলাস",
+        113: "আল-ফালাক",
+        114: "আন-নাস"
+    };
+
+    document.getElementById("modalTitle").innerText =
+        number + ". " + surahNames[number];
+
+    document.getElementById("modalText").innerHTML = `
+        <div style="text-align:center;">
+
+            <div style="
+                background:#e3f5ff;
+                padding:20px;
+                border-radius:14px;
+                margin-bottom:15px;
+            ">
+
+                <div style="
+                    font-size:28px;
+                    font-weight:bold;
+                    margin-bottom:8px;
+                ">
+                    ${surahNames[number]}
+                </div>
+
+                <div style="font-size:16px;">
+                    সূরা নম্বর: ${number}
+                </div>
+
+            </div>
+
+            <p style="
+                font-size:16px;
+                line-height:1.7;
+            ">
+                📖 আরবি কুরআনের আয়াত<br>
+                ও অনুবাদ পরবর্তী ধাপে যুক্ত করা হবে ইনশাআল্লাহ।
+            </p>
+
+        </div>
+    `;
+
+    document.getElementById("modal").style.display = "flex";
+  }
 /* Feature */
 function openFeature(name) {
 
