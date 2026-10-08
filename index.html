@@ -803,6 +803,7 @@ function openQuranTafsir() {
 
     document.getElementById("modal").style.display = "flex";
   }
+  
   function openSurah(number) {
 
     document.getElementById("modal").style.display = "flex";
@@ -813,7 +814,7 @@ function openQuranTafsir() {
     document.getElementById("modalText").innerHTML =
         "⏳ কুরআনের আয়াত লোড হচ্ছে...";
 
-    fetch("https://api.alquran.cloud/v1/surah/" + number)
+    fetch("https://api.alquran.cloud/v1/surah/" + number + "/quran-uthmani")
         .then(response => response.json())
         .then(data => {
 
@@ -839,9 +840,19 @@ if (number !== 9) {
     `;
   }
 
-            surah.ayahs.forEach(ayah => {
+            surah.ayahs.forEach((ayah, index) => {
 
-                ayahsHTML += `
+    let ayahText = ayah.text;
+
+    // API থেকে আসা বিসমিল্লাহ সরানো
+    if (index === 0 && number !== 9) {
+        ayahText = ayahText.replace(
+            /^بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\s*/u,
+            ""
+        );
+    }
+
+    ayahsHTML += `
                     <div style="
                         background:#ffffff;
                         margin:10px 0;
@@ -857,7 +868,7 @@ if (number !== 9) {
                             line-height:2;
                             margin-bottom:8px;
                         ">
-                            ${ayah.text}
+                            ${ayahText}
                         </div>
 
                         <div style="
