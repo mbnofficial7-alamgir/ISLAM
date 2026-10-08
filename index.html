@@ -824,6 +824,21 @@ function openQuranTafsir() {
 
             let ayahsHTML = "";
 
+if (number !== 9) {
+    ayahsHTML += `
+        <div style="
+            text-align:center;
+            direction:rtl;
+            font-size:24px;
+            font-weight:bold;
+            padding:15px 5px;
+            margin-bottom:10px;
+        ">
+            بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+        </div>
+    `;
+  }
+
             surah.ayahs.forEach(ayah => {
 
                 ayahsHTML += `
