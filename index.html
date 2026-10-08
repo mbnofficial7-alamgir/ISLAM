@@ -210,11 +210,21 @@ body {
     width: 90%;
     max-width: 400px;
     max-height: 85vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     background: white;
     border-radius: 15px;
-    padding: 20px 20px 50px 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  #modalText {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 30px;
   }
 
 .modal-box h2 {
