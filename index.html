@@ -825,50 +825,34 @@ function openQuranTafsir() {
 
             let ayahsHTML = "";
 
-if (number !== 9) {
-    ayahsHTML += `
-        <div style="
-            text-align:center;
-            direction:rtl;
-            font-size:24px;
-            font-weight:bold;
-            padding:15px 5px;
-            margin-bottom:10px;
-        ">
-            بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-        </div>
-    `;
-  }
+            /* বিসমিল্লাহ — সূরা তাওবা ছাড়া */
+            
 
-            surah.ayahs.forEach((ayah, index) => {
+            /* আয়াত ১ থেকে শেষ আয়াত */
 
-    let ayahText = ayah.text;
+          surah.ayahs.sort((a, b) =>
+    a.numberInSurah - b.numberInSurah
+);
+  
+            surah.ayahs.forEach((ayah) => {
 
-    // API থেকে আসা বিসমিল্লাহ সরানো
-    if (index === 0 && number !== 9) {
-        ayahText = ayahText.replace(
-            /^بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\s*/u,
-            ""
-        );
-    }
-
-    ayahsHTML += `
+                ayahsHTML += `
                     <div style="
                         background:#ffffff;
                         margin:10px 0;
                         padding:15px;
                         border-radius:12px;
-                        text-align:right;
-                        direction:rtl;
                         box-sizing:border-box;
                     ">
 
                         <div style="
+                            text-align:right;
+                            direction:rtl;
                             font-size:24px;
                             line-height:2;
                             margin-bottom:8px;
                         ">
-                            ${ayahText}
+                            ${ayah.text}
                         </div>
 
                         <div style="
