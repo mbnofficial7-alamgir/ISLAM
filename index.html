@@ -851,37 +851,46 @@ function openSurah(number) {
                 number: ayah.numberInSurah
             }));
 
-            // সূরা ফাতিহার জন্য বিশেষ বিন্যাস
-            if (number === 1) {
+            // সূরা ফাতিহার ৭টি আয়াতের সঠিক ক্রম
+if (number === 1) {
+    ayahs = [
+        {
+            text: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+            number: 1
+        },
+        {
+            text: "الرَّحْمَٰنِ الرَّحِيمِ",
+            number: 2
+        },
+        {
+            text: "مَالِكِ يَوْمِ الدِّينِ",
+            number: 3
+        },
+        {
+            text: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+            number: 4
+        },
+        {
+            text: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+            number: 5
+        },
+        {
+            text: "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ",
+            number: 6
+        },
+        {
+            text: "غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+            number: 7
+        }
+    ];
+  }
 
-                // API-এর প্রথম আয়াতটি বিসমিল্লাহ,
-                // তাই সেটি মূল আয়াতের তালিকা থেকে বাদ
-                ayahs = ayahs.slice(1);
-
-                // শেষ আয়াতটি দুই ভাগে সাজিয়ে ৭টি মূল আয়াত দেখানো
-                const last = ayahs[ayahs.length - 1];
-
-                if (last) {
-                    const parts = last.text.split(/(?=غَيْرِ)/u);
-
-                    if (parts.length === 2) {
-                        ayahs[ayahs.length - 1] = {
-                            text: parts[0].trim(),
-                            number: 6
-                        };
-
-                        ayahs.push({
-                            text: parts[1].trim(),
-                            number: 7
-                        });
-                    }
-                }
-
+                            if (number !== 1) {
                 ayahs = ayahs.map((ayah, index) => ({
                     ...ayah,
                     number: index + 1
                 }));
-            }
+  }
 
             ayahs.forEach(ayah => {
 
