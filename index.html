@@ -804,7 +804,8 @@ function openQuranTafsir() {
     document.getElementById("modal").style.display = "flex";
   }
   
-  function openSurah(number) {
+  
+function openSurah(number) {
 
     document.getElementById("modal").style.display = "flex";
 
@@ -815,7 +816,12 @@ function openQuranTafsir() {
         "⏳ কুরআনের আয়াত লোড হচ্ছে...";
 
     fetch("https://api.alquran.cloud/v1/surah/" + number + "/quran-uthmani")
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("সূরা লোড করা যায়নি");
+            }
+            return response.json();
+        })
         .then(data => {
 
             const surah = data.data;
@@ -825,32 +831,59 @@ function openQuranTafsir() {
 
             let ayahsHTML = "";
 
-          if (number !== 9) {
-    ayahsHTML += `
-        <div style="
-            text-align:center;
-            direction:rtl;
-            font-size:25px;
-            line-height:2;
-            padding:15px 5px;
-        ">
-            بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-        </div>
-    `;
-  }
+            // বিসমিল্লাহ আলাদা দেখাবে; সূরা তাওবায় নয়
+            if (number !== 9) {
+                ayahsHTML += `
+                    <div style="
+                        text-align:center;
+                        direction:rtl;
+                        font-size:26px;
+                        line-height:2;
+                        padding:15px 5px;
+                    ">
+                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                    </div>
+                `;
+            }
 
-            surah.ayahs.forEach((ayah) => {
+            let ayahs = surah.ayahs.map(ayah => ({
+                text: ayah.text.trim(),
+                number: ayah.numberInSurah
+            }));
 
-                const ayahText = ayah.text.trim();
+            // সূরা ফাতিহার জন্য বিশেষ বিন্যাস
+            if (number === 1) {
 
-              const cleanAyahText = (
-    number !== 9 && ayah.numberInSurah === 1
-)
-    ? ayahText.replace(
-        /^بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\s*/u,
-        ""
-    )
-    : ayahText;
+                // API-এর প্রথম আয়াতটি বিসমিল্লাহ,
+                // তাই সেটি মূল আয়াতের তালিকা থেকে বাদ
+                ayahs = ayahs.slice(1);
+
+                // শেষ আয়াতটি দুই ভাগে সাজিয়ে ৭টি মূল আয়াত দেখানো
+                const last = ayahs[ayahs.length - 1];
+
+                if (last) {
+                    const parts = last.text.split(/(?=غَيْرِ)/u);
+
+                    if (parts.length === 2) {
+                        ayahs[ayahs.length - 1] = {
+                            text: parts[0].trim(),
+                            number: 6
+                        };
+
+                        ayahs.push({
+                            text: parts[1].trim(),
+                            number: 7
+                        });
+                    }
+                }
+
+                ayahs = ayahs.map((ayah, index) => ({
+                    ...ayah,
+                    number: index + 1
+                }));
+            }
+
+            ayahs.forEach(ayah => {
 
                 ayahsHTML += `
                     <div style="
@@ -858,20 +891,18 @@ function openQuranTafsir() {
                         margin:10px 0;
                         padding:15px;
                         border-radius:12px;
-                        box-sizing:border-box;
                         width:100%;
+                        box-sizing:border-box;
                     ">
-
                         <div style="
                             text-align:right;
-direction:rtl;
-font-size:26px;
-line-height:2;
-white-space:normal;
-width:100%;
-box-sizing:border-box;
+                            direction:rtl;
+                            font-size:26px;
+                            line-height:2.2;
+                            width:100%;
+                            box-sizing:border-box;
                         ">
-                            ${cleanAyahText}
+                            ${ayah.text}
                         </div>
 
                         <div style="
@@ -880,9 +911,8 @@ box-sizing:border-box;
                             font-size:14px;
                             margin-top:8px;
                         ">
-                            আয়াত ${ayah.numberInSurah}
+                            আয়াত ${ayah.number}
                         </div>
-
                     </div>
                 `;
             });
@@ -899,7 +929,9 @@ box-sizing:border-box;
 
             console.error(error);
         });
-  }
+}
+
+
     
 
 /* Feature */
