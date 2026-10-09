@@ -825,16 +825,9 @@ function openQuranTafsir() {
 
             let ayahsHTML = "";
 
-            /* বিসমিল্লাহ — সূরা তাওবা ছাড়া */
-            
-
-            /* আয়াত ১ থেকে শেষ আয়াত */
-
-          surah.ayahs.sort((a, b) =>
-    a.numberInSurah - b.numberInSurah
-);
-  
             surah.ayahs.forEach((ayah) => {
+
+                const ayahText = ayah.text.trim();
 
                 ayahsHTML += `
                     <div style="
@@ -843,22 +836,24 @@ function openQuranTafsir() {
                         padding:15px;
                         border-radius:12px;
                         box-sizing:border-box;
+                        width:100%;
                     ">
 
                         <div style="
                             text-align:right;
                             direction:rtl;
                             font-size:24px;
-                            line-height:2;
-                            margin-bottom:8px;
+                            line-height:2.2;
+                            white-space:normal;
                         ">
-                            ${ayah.text}
+                            ${ayahText}
                         </div>
 
                         <div style="
                             text-align:left;
                             direction:ltr;
                             font-size:14px;
+                            margin-top:8px;
                         ">
                             আয়াত ${ayah.numberInSurah}
                         </div>
@@ -874,7 +869,8 @@ function openQuranTafsir() {
         .catch(error => {
 
             document.getElementById("modalText").innerHTML =
-                "❌ কুরআনের আয়াত লোড করা যায়নি।<br><br>ইন্টারনেট সংযোগ পরীক্ষা করুন।";
+                "❌ কুরআনের আয়াত লোড করা যায়নি।<br><br>" +
+                "ইন্টারনেট সংযোগ পরীক্ষা করুন।";
 
             console.error(error);
         });
