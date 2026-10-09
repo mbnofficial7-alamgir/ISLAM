@@ -843,6 +843,15 @@ function openQuranTafsir() {
 
                 const ayahText = ayah.text.trim();
 
+              const cleanAyahText = (
+    number !== 9 && ayah.numberInSurah === 1
+)
+    ? ayahText.replace(
+        /^بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\s*/u,
+        ""
+    )
+    : ayahText;
+
                 ayahsHTML += `
                     <div style="
                         background:#ffffff;
@@ -855,12 +864,14 @@ function openQuranTafsir() {
 
                         <div style="
                             text-align:right;
-                            direction:rtl;
-                            font-size:24px;
-                            line-height:2.2;
-                            white-space:normal;
+direction:rtl;
+font-size:26px;
+line-height:2;
+white-space:normal;
+width:100%;
+box-sizing:border-box;
                         ">
-                            ${ayahText}
+                            ${cleanAyahText}
                         </div>
 
                         <div style="
