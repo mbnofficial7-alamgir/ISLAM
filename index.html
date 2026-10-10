@@ -886,25 +886,27 @@ if (number === 1) {
                         width:100%;
                         box-sizing:border-box;
                     ">
-                        <div style="
-                            text-align:right;
-                            direction:rtl;
-                            font-size:26px;
-                            line-height:2.2;
-                            width:100%;
-                            box-sizing:border-box;
-                        ">
-                            ${ayah.text}
-                        </div>
+                        
+<div style="
+    text-align:left;
+    direction:ltr;
+    font-size:14px;
+    margin-bottom:8px;
+">
+    আয়াত ${ayah.number}
+</div>
 
-                        <div style="
-                            text-align:left;
-                            direction:ltr;
-                            font-size:14px;
-                            margin-top:8px;
-                        ">
-                            আয়াত ${ayah.number}
-                        </div>
+<div style="
+    text-align:right;
+    direction:rtl;
+    font-size:26px;
+    line-height:2.2;
+    width:100%;
+    box-sizing:border-box;
+">
+    ${ayah.text}
+</div>
+
                     </div>
                 `;
             });
