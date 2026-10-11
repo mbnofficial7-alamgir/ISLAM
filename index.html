@@ -847,9 +847,17 @@ function openSurah(number) {
             }
 
             let ayahs = surah.ayahs.map(ayah => ({
-                text: ayah.text.trim(),
-                number: ayah.numberInSurah
-            }));
+    text: ayah.text.trim(),
+    number: ayah.numberInSurah
+}));
+
+
+
+// প্রথম আয়াত থেকে বিসমিল্লাহর ৪টি শব্দ বাদ
+if (number !== 1 && number !== 9 && ayahs.length > 0) {
+    const words = ayahs[0].text.trim().split(/\s+/);
+    ayahs[0].text = words.slice(4).join(" ").trim();
+  }
 
             // সূরা ফাতিহার ৭টি আয়াতের সঠিক ক্রম
 
