@@ -195,24 +195,30 @@ body {
     font-size: 13px;
 }
 
-/* Modal */
+/* Full Screen Modal */
 .modal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.5);
-    z-index: 20;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    background: #ffffff;
+    z-index: 9999;
+    align-items: stretch;
+    justify-content: stretch;
 }
 
 .modal-box {
-    width: 90%;
-    max-width: 400px;
-    max-height: 85vh;
-    background: white;
-    border-radius: 15px;
-    padding: 20px;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
