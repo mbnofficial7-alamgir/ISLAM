@@ -240,7 +240,7 @@ body {
 }
 
   #modalTitle {
-    font-size: 26px;
+    font-size: 35px;
     text-align: center;
     margin-bottom: 18px;
     line-height: 1.6;
@@ -263,6 +263,20 @@ body {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* সূরার তালিকার সব নাম বড় করা */
+#modalText div[onclick^="openSurah"] {
+    font-size: 30px !important;
+    line-height: 1.8 !important;
+    padding: 12px 8px !important;
+    margin: 4px 0 !important;
+    border-bottom: 1px solid #eeeeee;
+    text-align: center;
+    cursor: pointer;
+  }
+
+।
+  
 </style>
 </head>
 
@@ -674,12 +688,12 @@ function openQuranTafsir() {
     document.getElementById("modalText").innerHTML = `
         <div style="text-align:center;">
 
-            <p style="font-size:17px; margin-bottom:15px;">
+            <p style="font-size:30px; margin-bottom:15px;">
                 📚 সূরা নির্বাচন করুন
             </p>
 
             <div id="surahList" style="
-    height:400px;
+    height:20px;
     overflow-y:scroll;
     -webkit-overflow-scrolling:touch;
     touch-action:pan-y;
