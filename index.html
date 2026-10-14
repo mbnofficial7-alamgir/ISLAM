@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <title>ISLAM</title>
 
 
@@ -15,14 +20,19 @@
   font-family: Arial, sans-serif;
   }
 
-/* আরবি কুরআনের জন্য আলাদা ফন্ট */
+/* নূরানী/কারিয়ানা ধাঁচে সহজ ও স্পষ্ট আরবি */
 .quran-arabic {
-font-family: "Amiri Quran", "Noto Naskh Arabic", serif;
-font-size: 38px;
-line-height: 2.1;
-text-align: center;
-direction: rtl;
-unicode-bidi: isolate;
+    font-family: "Noto Naskh Arabic", serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 2.2;
+    text-align: center;
+    direction: rtl;
+    unicode-bidi: isolate;
+  font-kerning: normal;
+    color: #172b20;
+    word-spacing: 2px;
+    overflow-wrap: anywhere;
 }
 
 body {
@@ -229,7 +239,7 @@ body {
     max-height: none;
     margin: 0;
     padding: 16px;
-    background: #e5f6ff;
+    background: #ffffff;
     border-radius: 0;
     display: flex;
     flex-direction: column;
@@ -861,9 +871,21 @@ function openSurah(number) {
             }
             return response.json();
         })
-        .then(data => {
+        .then(async data => {
 
             const surah = data.data;
+
+          // একই সূরার বাংলা অনুবাদ লোড
+const translationResponse = await fetch(
+    "https://api.alquran.cloud/v1/surah/" + number + "/bn.bengali"
+);
+
+if (!translationResponse.ok) {
+    throw new Error("বাংলা অনুবাদ লোড করা যায়নি");
+}
+
+const translationData = await translationResponse.json();
+const banglaAyahs = translationData.data.ayahs;
 
             document.getElementById("modalTitle").innerText =
                 "📖 " + number + ". " + surah.name;
@@ -871,7 +893,7 @@ function openSurah(number) {
             let ayahsHTML = "";
 
             // বিসমিল্লাহ আলাদা দেখাবে; সূরা তাওবায় নয়
-            if (number !== 9) {
+           if (number !== 9) {
                 ayahsHTML += `
                     <div style="
                         text-align:center;
@@ -890,7 +912,11 @@ function openSurah(number) {
     number: ayah.numberInSurah
 }));
 
-
+// সূরা ফাতিহার প্রথম আয়াত সঠিকভাবে নির্ধারণ
+if (number === 1 && ayahs.length > 0) {
+    ayahs[0].text = "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ";
+    ayahs[0].number = 1;
+  }
 
 // প্রথম আয়াত থেকে বিসমিল্লাহর ৪টি শব্দ বাদ
 if (number !== 1 && number !== 9 && ayahs.length > 0) {
@@ -901,17 +927,7 @@ if (number !== 1 && number !== 9 && ayahs.length > 0) {
             // সূরা ফাতিহার ৭টি আয়াতের সঠিক ক্রম
 
 
-if (number === 1) {
-    ayahs = [
-        { text: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", number: 1 },
-        { text: "الرَّحْمَٰنِ الرَّحِيمِ", number: 2 },
-        { text: "مَالِكِ يَوْمِ الدِّينِ", number: 3 },
-        { text: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", number: 4 },
-        { text: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", number: 5 },
-        { text: "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ", number: 6 },
-        { text: "غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ", number: 7 }
-    ];
-}
+
 
 
 
@@ -943,15 +959,22 @@ if (number === 1) {
     ${ayah.number}
 </div>
 
-<div style="
-    text-align:center;
-    direction:rtl;
-    font-size:80px;
-    line-height:1.5;
-    width:100%;
-    box-sizing:border-box;
-">
+<div class="quran-arabic">
     ${ayah.text}
+</div>
+
+<div style="
+    font-size:20px;
+    line-height:1.9;
+    color:#234936;
+    text-align:left;
+    direction:ltr;
+    margin-top:12px;
+    padding:10px;
+    background:#f1f8f2;
+    border-radius:8px;
+">
+    ${banglaAyahs[ayah.number - 1]?.text || "বাংলা অনুবাদ পাওয়া যায়নি।"}
 </div>
 
                     </div>
