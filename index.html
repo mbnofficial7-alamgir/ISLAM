@@ -887,8 +887,15 @@ if (!translationResponse.ok) {
 const translationData = await translationResponse.json();
 const banglaAyahs = translationData.data.ayahs;
 
-            document.getElementById("modalTitle").innerText =
-                "📖 " + number + ". " + surah.name;
+            const surahNamesBn = [
+    "", "আল-ফাতিহা", "আল-বাকারা", "আলে ইমরান",
+    "আন-নিসা", "আল-মায়িদা", "আল-আনআম", "আল-আরাফ",
+    "আল-আনফাল", "আত-তাওবা", "ইউনুস"
+];
+
+document.getElementById("modalTitle").innerText =
+    "📖 " + number + ". " +
+    (surahNamesBn[number] || surah.name);
 
             let ayahsHTML = "";
 
@@ -912,11 +919,6 @@ const banglaAyahs = translationData.data.ayahs;
     number: ayah.numberInSurah
 }));
 
-// সূরা ফাতিহার প্রথম আয়াত সঠিকভাবে নির্ধারণ
-if (number === 1 && ayahs.length > 0) {
-    ayahs[0].text = "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ";
-    ayahs[0].number = 1;
-  }
 
 // সূরা ফাতিহার ৭টি আয়াত সঠিকভাবে নির্ধারণ
 if (number === 1) {
@@ -1006,7 +1008,7 @@ if (number === 1) {
     background:#f1f8f2;
     border-radius:8px;
 ">
-    ${banglaAyahs[ayah.number - 1]?.text || "বাংলা অনুবাদ পাওয়া যায়নি।"}
+    ${banglaAyahs[ number === 1 ? ayah.number : ayah.number - 1 ]?.text || "বাংলা অনুবাদ পাওয়া যায়নি।"}
 </div>
 
 <div style="
