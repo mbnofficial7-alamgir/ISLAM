@@ -852,7 +852,44 @@ function openQuranTafsir() {
 
     document.getElementById("modal").style.display = "flex";
   }
+
   
+let appLanguage = "bn";
+
+const appTranslations = {
+    bn: {
+        language: "ভাষা নির্বাচন করুন",
+        loading: "⏳ কুরআনের আয়াত লোড হচ্ছে...",
+        tafsir: "📚 তাফসির ইবনে কাসির পড়ুন",
+        back: "↩️ সূরার আয়াতে ফিরে যান",
+        tafsirLoading: "⏳ বাংলা তাফসির লোড হচ্ছে...",
+        error: "❌ লেখা লোড করা যায়নি। ইন্টারনেট পরীক্ষা করুন।"
+    },
+    en: {
+        language: "Select language",
+        loading: "⏳ Loading Quran verses...",
+        tafsir: "📚 Read Tafsir Ibn Kathir",
+        back: "↩️ Back to Surah verses",
+        tafsirLoading: "⏳ Loading Tafsir...",
+        error: "❌ Could not load text. Check your internet."
+    },
+    ur: {
+        language: "زبان منتخب کریں",
+        loading: "⏳ قرآنی آیات لوڈ ہو رہی ہیں...",
+        tafsir: "📚 تفسیر ابن کثیر پڑھیں",
+        back: "↩️ سورت کی آیات پر واپس جائیں",
+        tafsirLoading: "⏳ تفسیر لوڈ ہو رہی ہے...",
+        error: "❌ تحریر لوڈ نہیں ہوئی۔ انٹرنیٹ چیک کریں۔"
+    },
+    hi: {
+        language: "भाषा चुनें",
+        loading: "⏳ कुरआन की आयतें लोड हो रही हैं...",
+        tafsir: "📚 तफ़सीर इब्न कसीर पढ़ें",
+        back: "↩️ सूरह की आयतों पर वापस जाएँ",
+        tafsirLoading: "⏳ तफ़सीर लोड हो रही है...",
+        error: "❌ सामग्री लोड नहीं हुई। इंटरनेट जाँचें।"
+    }
+};  
   
 function openSurah(number) {
 
@@ -876,22 +913,181 @@ function openSurah(number) {
             const surah = data.data;
 
           // একই সূরার বাংলা অনুবাদ লোড
+
+const translationEditions = {
+    bn: "bn.bengali",
+    en: "en.sahih",
+    ur: "ur.jalandhry",
+    hi: "hi.hindi"
+};
+
+const selectedEdition =
+    translationEditions[appLanguage] || translationEditions.bn;
+
 const translationResponse = await fetch(
-    "https://api.alquran.cloud/v1/surah/" + number + "/bn.bengali"
+    "https://api.alquran.cloud/v1/surah/" +
+    number + "/" + selectedEdition
 );
 
 if (!translationResponse.ok) {
-    throw new Error("বাংলা অনুবাদ লোড করা যায়নি");
+    throw new Error("নির্বাচিত ভাষার অনুবাদ লোড করা যায়নি");
 }
 
 const translationData = await translationResponse.json();
 const banglaAyahs = translationData.data.ayahs;
 
-            const surahNamesBn = [
-    "", "আল-ফাতিহা", "আল-বাকারা", "আলে ইমরান",
-    "আন-নিসা", "আল-মায়িদা", "আল-আনআম", "আল-আরাফ",
-    "আল-আনফাল", "আত-তাওবা", "ইউনুস"
+
+          
+const oldLanguageMenu = document.getElementById("appLanguageSelect");
+
+if (!oldLanguageMenu) {
+    const languageMenu = document.createElement("div");
+
+    languageMenu.style.cssText =
+        "margin:12px 0;padding:12px;background:#eef8f0;border-radius:10px;";
+
+    languageMenu.innerHTML = `
+        <label for="appLanguageSelect"
+            style="display:block;font-size:17px;font-weight:bold;margin-bottom:8px;">
+            🌐 ভাষা নির্বাচন করুন
+        </label>
+
+        <select id="appLanguageSelect"
+            onchange="setAppLanguage(this.value)"
+            style="width:100%;padding:12px;font-size:16px;border-radius:8px;">
+            <option value="bn">বাংলা</option>
+            <option value="en">English</option>
+            <option value="ur">اردو</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+    `;
+
+    document.getElementById("modalText").before(languageMenu);
+}
+
+
+const surahNamesBn = [
+    "",
+    "আল-ফাতিহা",
+    "আল-বাকারা",
+    "আলে ইমরান",
+    "আন-নিসা",
+    "আল-মায়িদা",
+    "আল-আনআম",
+    "আল-আরাফ",
+    "আল-আনফাল",
+    "আত-তাওবা",
+    "ইউনুস",
+    "হুদ",
+    "ইউসুফ",
+    "আর-রাদ",
+    "ইবরাহিম",
+    "আল-হিজর",
+    "আন-নাহল",
+    "আল-ইসরা",
+    "আল-কাহফ",
+    "মারইয়াম",
+    "ত্ব-হা",
+    "আল-আম্বিয়া",
+    "আল-হাজ্জ",
+    "আল-মুমিনুন",
+    "আন-নূর",
+    "আল-ফুরকান",
+    "আশ-শুআরা",
+    "আন-নামল",
+    "আল-কাসাস",
+    "আল-আনকাবুত",
+    "আর-রূম",
+    "লুকমান",
+    "আস-সাজদাহ",
+    "আল-আহযাব",
+    "সাবা",
+    "ফাতির",
+    "ইয়াসিন",
+    "আস-সাফফাত",
+    "সাদ",
+    "আয-যুমার",
+    "গাফির",
+    "ফুসসিলাত",
+    "আশ-শূরা",
+    "আয-যুখরুফ",
+    "আদ-দুখান",
+    "আল-জাসিয়াহ",
+    "আল-আহকাফ",
+    "মুহাম্মদ",
+    "আল-ফাতহ",
+    "আল-হুজুরাত",
+    "কাফ",
+    "আয-যারিয়াত",
+    "আত-তূর",
+    "আন-নাজম",
+    "আল-কামার",
+    "আর-রহমান",
+    "আল-ওয়াকিয়াহ",
+    "আল-হাদিদ",
+    "আল-মুজাদালাহ",
+    "আল-হাশর",
+    "আল-মুমতাহিনাহ",
+    "আস-সাফ",
+    "আল-জুমুআ",
+    "আল-মুনাফিকুন",
+    "আত-তাগাবুন",
+    "আত-তালাক",
+    "আত-তাহরিম",
+    "আল-মুলক",
+    "আল-কলম",
+    "আল-হাক্কাহ",
+    "আল-মাআরিজ",
+    "নূহ",
+    "আল-জিন",
+    "আল-মুযযাম্মিল",
+    "আল-মুদ্দাসসির",
+    "আল-কিয়ামাহ",
+    "আল-ইনসান",
+    "আল-মুরসালাত",
+    "আন-নাবা",
+    "আন-নাযিআত",
+    "আবাসা",
+    "আত-তাকভির",
+    "আল-ইনফিতার",
+    "আল-মুতাফফিফিন",
+    "আল-ইনশিকাক",
+    "আল-বুরুজ",
+    "আত-তারিক",
+    "আল-আলা",
+    "আল-গাশিয়াহ",
+    "আল-ফজর",
+    "আল-বালাদ",
+    "আশ-শামস",
+    "আল-লাইল",
+    "আদ-দুহা",
+    "আশ-শারহ",
+    "আত-তিন",
+    "আল-আলাক",
+    "আল-কদর",
+    "আল-বাইয়িনাহ",
+    "আয-যিলযাল",
+    "আল-আদিয়াত",
+    "আল-কারিআহ",
+    "আত-তাকাসুর",
+    "আল-আসর",
+    "আল-হুমাযাহ",
+    "আল-ফিল",
+    "কুরাইশ",
+    "আল-মাউন",
+    "আল-কাউসার",
+    "আল-কাফিরুন",
+    "আন-নাসর",
+    "আল-মাসাদ",
+    "আল-ইখলাস",
+    "আল-ফালাক",
+    "আন-নাস"
 ];
+
+          
+
+
+            
 
 document.getElementById("modalTitle").innerText =
     "📖 " + number + ". " +
@@ -1051,6 +1247,8 @@ if (number === 1) {
                 "ইন্টারনেট সংযোগ পরীক্ষা করুন।";
 
             console.error(error);
+          document.getElementById("modalText").innerHTML +=
+    "<br><br>সমস্যা: " + error.message;
         });
 }
 
@@ -1132,6 +1330,35 @@ async function loadTafsir(surah, ayah) {
                 ↩️ সূরায় ফিরে যান
             </button>
         `;
+    }
+}
+
+
+function setAppLanguage(language) {
+    if (!appTranslations[language]) {
+        language = "bn";
+    }
+
+    appLanguage = language;
+
+    const menu = document.getElementById("appLanguageSelect");
+    if (menu) {
+        menu.value = language;
+    }
+
+    const modalText = document.getElementById("modalText");
+    if (!modalText) return;
+
+    const backButton = modalText.querySelector(
+        "button[onclick^='openSurah']"
+    );
+
+    const match = backButton
+        ? backButton.getAttribute("onclick").match(/openSurah\((\d+)\)/)
+        : null;
+
+    if (match) {
+        openSurah(Number(match[1]));
     }
 }
 
