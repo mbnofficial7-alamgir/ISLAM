@@ -1016,23 +1016,23 @@ if (number === 1) {
     margin-top:12px;
 ">
     
+
 <div style="text-align:center; margin-top:12px;">
-    <a
-        href="https://quran.com/bn/${number}%3A${ayah.number}/tafsirs/bn-tafseer-ibn-e-kaseer"
-        target="_blank"
-        rel="noopener noreferrer"
+    <button
+        onclick="loadTafsir(${number}, ${ayah.number})"
         style="
-            display:inline-block;
             background:#176b45;
             color:white;
-            text-decoration:none;
+            border:none;
             padding:10px 16px;
             border-radius:8px;
             font-size:16px;
             font-weight:bold;
+            cursor:pointer;
         "
-    >📚 তাফসির ইবনে কাসির পড়ুন</a>
+    >📚 তাফসির ইবনে কাসির পড়ুন</button>
 </div>
+
 
 </div>
 
@@ -1054,6 +1054,86 @@ if (number === 1) {
         });
 }
 
+
+async function loadTafsir(surah, ayah) {
+    const modalText = document.getElementById("modalText");
+
+    modalText.innerHTML = "⏳ বাংলা তাফসির লোড হচ্ছে...";
+
+    try {
+        const response = await fetch(
+            `https://islam-tafsir-api-1.onrender.com/tafsir/${surah}/${ayah}`
+        );
+
+        if (!response.ok) {
+            throw new Error("তাফসির লোড করা যায়নি");
+        }
+
+        const data = await response.json();
+
+        if (data.status !== "ok" || !data.tafsir) {
+            throw new Error("তাফসির পাওয়া যায়নি");
+        }
+
+        const tafsir = data.tafsir;
+        const tafsirText = tafsir.text || tafsir.text_html || "";
+
+        if (!tafsirText) {
+            throw new Error("তাফসিরের লেখা পাওয়া যায়নি");
+        }
+
+        modalText.innerHTML = `
+            <div style="
+                background:#ffffff;
+                padding:16px;
+                border-radius:12px;
+                line-height:1.9;
+                color:#234936;
+                overflow-wrap:anywhere;
+            ">
+                <h3 style="text-align:center;color:#176b45;">
+                    📚 বাংলা তাফসির ইবনে কাসির
+                </h3>
+
+                <p style="text-align:center;">
+                    সূরা ${surah} • আয়াত ${ayah}
+                </p>
+
+                <div>${tafsirText}</div>
+
+                <button
+                    onclick="openSurah(${surah})"
+                    style="
+                        margin-top:18px;
+                        background:#176b45;
+                        color:white;
+                        border:none;
+                        padding:10px 16px;
+                        border-radius:8px;
+                        font-size:16px;
+                    "
+                >↩️ সূরার আয়াতে ফিরে যান</button>
+            </div>
+        `;
+    } catch (error) {
+        console.error("তাফসিরের সমস্যা:", error);
+
+        modalText.innerHTML = `
+            <p style="color:#b00020;">
+                ❌ তাফসির লোড করা যায়নি।
+                ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।
+            </p>
+
+            <button onclick="loadTafsir(${surah}, ${ayah})">
+                🔄 আবার চেষ্টা করুন
+            </button>
+
+            <button onclick="openSurah(${surah})">
+                ↩️ সূরায় ফিরে যান
+            </button>
+        `;
+    }
+}
 
     
 
