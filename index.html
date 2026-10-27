@@ -890,6 +890,44 @@ const appTranslations = {
         error: "❌ सामग्री लोड नहीं हुई। इंटरनेट जाँचें।"
     }
 };  
+
+  /* ==============================
+   কুরআনের অফলাইন ডেটা সংরক্ষণ
+============================== */
+
+const QURAN_CACHE_NAME = "islam-quran-data-v1";
+
+async function saveQuranOffline(number, arabicData, translationData) {
+    try {
+        const cache = await caches.open(QURAN_CACHE_NAME);
+
+        const savedData = {
+            surahNumber: number,
+            arabic: arabicData,
+            translation: translationData,
+            language: appLanguage
+        };
+
+        await cache.put(
+            new Request(
+                new URL(
+                    "./quran-surah-" + number + "-" + appLanguage + ".json",
+                    window.location.href
+                ).href
+            ),
+            new Response(JSON.stringify(savedData), {
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                }
+            })
+        );
+
+        return true;
+    } catch (error) {
+        console.error("কুরআন সংরক্ষণ করা যায়নি:", error);
+        return false;
+    }
+  }
   
 function openSurah(number) {
   currentSurahNumber = number;
@@ -937,7 +975,12 @@ if (!translationResponse.ok) {
 const translationData = await translationResponse.json();
 const banglaAyahs = translationData.data.ayahs;
 
-
+// আরবি ও নির্বাচিত অনুবাদ অফলাইনে সংরক্ষণ
+await saveQuranOffline(
+    number,
+    surah,
+    translationData.data
+);
           
 const oldLanguageMenu = document.getElementById("appLanguageSelect");
 
