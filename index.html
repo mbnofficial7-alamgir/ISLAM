@@ -892,6 +892,7 @@ const appTranslations = {
 };  
   
 function openSurah(number) {
+  currentSurahNumber = number;
 
     document.getElementById("modal").style.display = "flex";
 
@@ -1089,9 +1090,98 @@ const surahNamesBn = [
 
             
 
+
+const surahNamesEn = [
+    "", "Al-Fatihah", "Al-Baqarah", "Ali 'Imran", "An-Nisa",
+    "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah",
+    "Yunus", "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim",
+    "Al-Hijr", "An-Nahl", "Al-Isra", "Al-Kahf", "Maryam",
+    "Ta-Ha", "Al-Anbya", "Al-Hajj", "Al-Mu'minun", "An-Nur",
+    "Al-Furqan", "Ash-Shu'ara", "An-Naml", "Al-Qasas", "Al-Ankabut",
+    "Ar-Rum", "Luqman", "As-Sajdah", "Al-Ahzab", "Saba",
+    "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar",
+    "Ghafir", "Fussilat", "Ash-Shura", "Az-Zukhruf", "Ad-Dukhan",
+    "Al-Jathiyah", "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat",
+    "Qaf", "Adh-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar",
+    "Ar-Rahman", "Al-Waqi'ah", "Al-Hadid", "Al-Mujadilah", "Al-Hashr",
+    "Al-Mumtahanah", "As-Saff", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun",
+    "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqah",
+    "Al-Ma'arij", "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir",
+    "Al-Qiyamah", "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at",
+    "Abasa", "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq",
+    "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr",
+    "Al-Balad", "Ash-Shams", "Al-Layl", "Ad-Duha", "Ash-Sharh",
+    "At-Tin", "Al-Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah",
+    "Al-Adiyat", "Al-Qari'ah", "At-Takathur", "Al-Asr", "Al-Humazah",
+    "Al-Fil", "Quraysh", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun",
+    "An-Nasr", "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
+];
+
+const surahNamesUr = [
+    "", "الفاتحہ", "البقرہ", "آل عمران", "النساء",
+    "المائدہ", "الانعام", "الاعراف", "الانفال", "التوبہ",
+    "یونس", "ہود", "یوسف", "الرعد", "ابراہیم",
+    "الحجر", "النحل", "الإسراء", "الکہف", "مریم",
+    "طٰہٰ", "الانبیاء", "الحج", "المؤمنون", "النور",
+    "الفرقان", "الشعراء", "النمل", "القصص", "العنکبوت",
+    "الروم", "لقمان", "السجدہ", "الاحزاب", "سبا",
+    "فاطر", "یس", "الصافات", "ص", "الزمر",
+    "غافر", "فصلت", "الشوریٰ", "الزخرف", "الدخان",
+    "الجاثیہ", "الاحقاف", "محمد", "الفتح", "الحجرات",
+    "ق", "الذاریات", "الطور", "النجم", "القمر",
+    "الرحمن", "الواقعہ", "الحدید", "المجادلہ", "الحشر",
+    "الممتحنہ", "الصف", "الجمعہ", "المنافقون", "التغابن",
+    "الطلاق", "التحریم", "الملک", "القلم", "الحاقہ",
+    "المعارج", "نوح", "الجن", "المزمل", "المدثر",
+    "القیامہ", "الانسان", "المرسلات", "النبأ", "النازعات",
+    "عبس", "التکویر", "الانفطار", "المطففین", "الانشقاق",
+    "البروج", "الطارق", "الأعلى", "الغاشیہ", "الفجر",
+    "البلد", "الشمس", "اللیل", "الضحیٰ", "الشرح",
+    "التین", "العلق", "القدر", "البینہ", "الزلزال",
+    "العادیات", "القارعہ", "التکاثر", "العصر", "الہمزہ",
+    "الفیل", "قریش", "الماعون", "الکوثر", "الکافرون",
+    "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
+];
+
+const surahNamesHi = [
+    "", "अल-फ़ातिहा", "अल-बक़रा", "आले-इमरान", "अन-निसा",
+    "अल-माइदा", "अल-अनआम", "अल-आराफ़", "अल-अनफ़ाल", "अत-तौबा",
+    "यूनुस", "हूद", "यूसुफ़", "अर-राद", "इब्राहीम",
+    "अल-हिज्र", "अन-नहल", "अल-इसरा", "अल-कहफ़", "मरयम",
+    "ता-हा", "अल-अंबिया", "अल-हज्ज", "अल-मुमिनून", "अन-नूर",
+    "अल-फ़ुरक़ान", "अश-शुअरा", "अन-नम्ल", "अल-क़सस", "अल-अंकबूत",
+    "अर-रूम", "लुक़मान", "अस-सज्दा", "अल-अहज़ाब", "सबा",
+    "फ़ातिर", "या-सीन", "अस-साफ़्फ़ात", "साद", "अज़-जुमर",
+    "ग़ाफ़िर", "फ़ुस्सिलत", "अश-शूरा", "अज़-ज़ुख़रुफ़", "अद-दुख़ान",
+    "अल-जासिया", "अल-अहक़ाफ़", "मुहम्मद", "अल-फ़त्ह", "अल-हुजुरात",
+    "क़ाफ़", "अज़-ज़ारियात", "अत-तूर", "अन-नज्म", "अल-क़मर",
+    "अर-रहमान", "अल-वाक़िआ", "अल-हदीद", "अल-मुजादिला", "अल-हश्र",
+    "अल-मुम्तहिना", "अस-सफ़", "अल-जुमुआ", "अल-मुनाफ़िक़ून", "अत-तग़ाबुन",
+    "अत-तलाक़", "अत-तहरीम", "अल-मुल्क", "अल-क़लम", "अल-हाक़्क़ा",
+    "अल-मआरिज", "नूह", "अल-जिन्न", "अल-मुज़्ज़म्मिल", "अल-मुद्दस्सिर",
+    "अल-क़ियामा", "अल-इंसान", "अल-मुरसलात", "अन-नबा", "अन-नाज़िआत",
+    "अबस", "अत-तकवीर", "अल-इन्फ़ितार", "अल-मुतफ़्फ़िफ़ीन", "अल-इन्शिक़ाक़",
+    "अल-बुरूज", "अत-तारिक़", "अल-अला", "अल-ग़ाशिया", "अल-फ़ज्र",
+    "अल-बलद", "अश-शम्स", "अल-लैल", "अद-दुहा", "अश-शर्ह",
+    "अत-तीन", "अल-अलक़", "अल-क़द्र", "अल-बय्यिना", "अज़-ज़लज़ला",
+    "अल-आदियात", "अल-क़ारिआ", "अत-तकासुर", "अल-अस्र", "अल-हुमज़ा",
+    "अल-फ़ील", "क़ुरैश", "अल-माऊन", "अल-कौसर", "अल-काफ़िरून",
+    "अन-नस्र", "अल-मसद", "अल-इख़लास", "अल-फ़लक़", "अन-नास"
+];
+
+const currentSurahNames = {
+    bn: surahNamesBn,
+    en: surahNamesEn,
+    ur: surahNamesUr,
+    hi: surahNamesHi
+};
+
 document.getElementById("modalTitle").innerText =
     "📖 " + number + ". " +
-    (surahNamesBn[number] || surah.name);
+    (currentSurahNames[appLanguage]?.[number] ||
+     surahNamesBn[number] ||
+     surah.name);
+
 
             let ayahsHTML = "";
 
@@ -1334,6 +1424,7 @@ async function loadTafsir(surah, ayah) {
 }
 
 
+
 function setAppLanguage(language) {
     if (!appTranslations[language]) {
         language = "bn";
@@ -1346,21 +1437,12 @@ function setAppLanguage(language) {
         menu.value = language;
     }
 
-    const modalText = document.getElementById("modalText");
-    if (!modalText) return;
-
-    const backButton = modalText.querySelector(
-        "button[onclick^='openSurah']"
-    );
-
-    const match = backButton
-        ? backButton.getAttribute("onclick").match(/openSurah\((\d+)\)/)
-        : null;
-
-    if (match) {
-        openSurah(Number(match[1]));
+    if (typeof currentSurahNumber !== "undefined" &&
+        currentSurahNumber) {
+        openSurah(currentSurahNumber);
     }
 }
+
 
     
 
@@ -2332,3 +2414,20 @@ function escapeHTML(text) {
 renderTalim();
 
 </script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(function() {
+                console.log("ISLAM App offline support ready");
+            })
+            .catch(function(error) {
+                console.error("Service Worker error:", error);
+            });
+    });
+}
+</script>
+
+</body>
+</html>
